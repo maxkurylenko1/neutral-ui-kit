@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Input } from "@/components/ui/Input";
+import { Input } from "@/components/ui/input";
 import { Search, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
