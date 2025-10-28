@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+.storybook-static
+*.lock
+package-lock.json
+pnpm-lock.yaml
