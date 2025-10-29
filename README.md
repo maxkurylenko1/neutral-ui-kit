@@ -39,18 +39,18 @@ Tooling:      Next.js 14, ESLint, Prettier, Husky
 - **Checkbox** - Indeterminate state, compound pattern
 - **Switch** - Toggle with label, description, error handling
 
-### Overlays 🚧
+### Overlays ✅
 
 - **Dialog** - Focus trap, ESC/backdrop close
 - **Toast** - Queue manager, auto-dismiss
 - **Tooltip** - Keyboard friendly, customizable delay
 
-### Navigation 🚧
+### Navigation ✅
 
 - **Tabs** - Controlled/uncontrolled modes
 - **Dropdown** - Keyboard navigation
 
-### Coming Soon 📅
+### Coming Soon ✅
 
 - Select, Radio, Textarea
 - Card, Badge, Avatar
@@ -223,10 +223,10 @@ pnpm type-check
 ## 📈 Roadmap
 
 - [x] : Base inputs (Button, Input, Checkbox, Switch)
-- [ ] : Overlays (Dialog, Toast, Tooltip) + Navigation (Tabs, Dropdown)
-- [ ] : Form components (Select, Radio, Textarea)
-- [ ] : Data display (Card, Badge, Avatar)
-- [ ] : Advanced (Table, Pagination, Carousel)
+- [x] : Overlays (Dialog, Toast, Tooltip) + Navigation (Tabs, Dropdown)
+- [x] : Form components (Select, Radio, Textarea)
+- [x] : Data display (Card, Badge, Avatar)
+- [x] : Advanced (Table, Pagination, Carousel)
 - [ ] : Polish, docs, npm publish
 
 ## 📄 License
