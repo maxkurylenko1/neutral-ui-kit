@@ -40,14 +40,59 @@ const meta = {
     layout: "centered",
   },
   tags: ["autodocs"],
+  argTypes: {
+    open: {
+      control: "boolean",
+      description: "Controlled open state",
+      table: {
+        type: { summary: "boolean" },
+      },
+    },
+    defaultOpen: {
+      control: "boolean",
+      description: "Default open state (uncontrolled)",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "false" },
+      },
+    },
+    onOpenChange: {
+      action: "openChange",
+      description: "Callback when open state changes",
+      table: {
+        type: { summary: "(open: boolean) => void" },
+      },
+    },
+    modal: {
+      control: "boolean",
+      description:
+        "Whether the dropdown is modal (blocks interaction with rest of page)",
+      table: {
+        type: { summary: "boolean" },
+        defaultValue: { summary: "true" },
+      },
+    },
+    dir: {
+      control: "select",
+      options: ["ltr", "rtl"],
+      description: "Reading direction of the dropdown menu",
+      table: {
+        type: { summary: "ltr | rtl" },
+      },
+    },
+  },
 } satisfies Meta<typeof DropdownMenu>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default = {
-  render: () => (
-    <DropdownMenu>
+export const Default: Story = {
+  args: {
+    defaultOpen: false,
+    modal: true,
+  },
+  render: (args) => (
+    <DropdownMenu {...args}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Open Menu</Button>
       </DropdownMenuTrigger>
