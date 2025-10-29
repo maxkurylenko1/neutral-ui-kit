@@ -1,0 +1,144 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as ButtonStories from "./button.stories";
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A versatile button component with multiple variants, sizes, and loading states.
+
+<Canvas of={ButtonStories.Primary} />
+
+## Usage
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+function Example() {
+  return <Button variant="primary">Click me</Button>;
+}
+```
+
+## API
+
+<Controls />
+
+### Variants
+
+The button supports five visual variants:
+
+- **primary** - Main call-to-action buttons
+- **secondary** - Secondary actions
+- **destructive** - Dangerous or destructive actions
+- **outline** - Alternative style with border
+- **ghost** - Minimal style for tertiary actions
+
+### Sizes
+
+Three size options are available:
+
+- **sm** - Compact size for tight spaces (h-9, text-xs)
+- **md** - Default size for most cases (h-10, text-sm)
+- **lg** - Prominent size for emphasis (h-11, text-base)
+
+### States
+
+- **loading** - Shows spinner and disables interaction
+- **disabled** - Prevents interaction and reduces opacity
+
+## Examples
+
+### With Icons
+
+Icons can be added on either side of the button text:
+
+```tsx
+import { Mail, Download } from "lucide-react";
+
+<Button leftIcon={<Mail className="h-4 w-4" />}>Send Email</Button>
+<Button rightIcon={<Download className="h-4 w-4" />}>Download</Button>
+```
+
+<Canvas of={ButtonStories.WithLeftIcon} />
+
+### Loading State
+
+Use loading state to indicate async operations:
+
+```tsx
+<Button loading onClick={handleSubmit}>
+  Submit
+</Button>
+```
+
+<Canvas of={ButtonStories.Loading} />
+
+### As Child
+
+Use `asChild` prop to render button as a different element:
+
+```tsx
+<Button asChild>
+  <a href="/docs">Documentation</a>
+</Button>
+```
+
+## Best Practices
+
+### Do's
+
+- Use primary variant for main actions (one per screen)
+- Use descriptive text that explains the action
+- Add loading state for async operations
+- Disable buttons when action is unavailable
+- Use icons to enhance meaning, not replace text
+
+### Don'ts
+
+- Don't use multiple primary buttons on same screen
+- Don't make buttons too small (avoid custom heights < 36px)
+- Don't use destructive variant for non-destructive actions
+- Don't rely solely on color to convey meaning
+- Don't forget to add proper aria-labels when using icon-only buttons
+
+## Accessibility
+
+### Keyboard Navigation
+
+- Buttons are focusable via `Tab` key
+- Activated with `Enter` or `Space` keys
+- Focus visible with 2px ring indicator
+
+### Screen Readers
+
+When using icon-only buttons, always provide accessible labels:
+
+```tsx
+<Button aria-label="Close dialog">
+  <X className="h-4 w-4" />
+</Button>
+```
+
+### Disabled State
+
+Disabled buttons:
+
+- Have `pointer-events: none` to prevent interaction
+- Show reduced opacity (50%)
+- Cannot receive keyboard focus
+- Include `disabled` attribute for assistive tech
+
+### Loading State
+
+Loading buttons:
+
+- Are automatically disabled
+- Show loading spinner with `animate-spin`
+- Maintain same height to prevent layout shift
+- Screen readers announce as "busy" via implicit disabled state
+
+## Related Components
+
+- [Input](/docs/components-input--docs) - For text input fields
+- [Dialog](/docs/components-dialog--docs) - Often contains action buttons
+- [Dropdown Menu](/docs/components-dropdown-menu--docs) - For grouped actions
