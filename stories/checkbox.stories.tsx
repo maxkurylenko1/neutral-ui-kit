@@ -18,13 +18,6 @@ const meta = {
       control: "boolean",
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ minWidth: "280px" }}>
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;

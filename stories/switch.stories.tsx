@@ -17,13 +17,6 @@ const meta = {
       control: "boolean",
     },
   },
-  decorators: [
-    (Story) => (
-      <div style={{ minWidth: "320px" }}>
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof Switch>;
 
 export default meta;
