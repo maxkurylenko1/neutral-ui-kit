@@ -50,11 +50,19 @@ Tooling:      Next.js 14, ESLint, Prettier, Husky
 - **Tabs** - Controlled/uncontrolled modes
 - **Dropdown** - Keyboard navigation
 
-### Coming Soon ✅
+### Form Components ✅
 
-- Select, Radio, Textarea
+- **Select** - Custom dropdown, keyboard navigation, controlled/uncontrolled
+- **Textarea** - Auto-resize, character count, error state
+
+### Data Display ✅
+
+- **Table** - Sorting, sticky header, empty state
+- **Pagination** - Keyboard accessible, page size control
+
+### Coming Soon 🚧
+
 - Card, Badge, Avatar
-- Table, Pagination
 
 ## 🚀 Getting Started
 
