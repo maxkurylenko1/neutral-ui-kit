@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Neutral UI Kit",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider defaultTheme="light" storageKey="neutral-ui-theme">
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
