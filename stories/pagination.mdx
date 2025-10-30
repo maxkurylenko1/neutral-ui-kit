@@ -1,0 +1,529 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as PaginationStories from "./pagination.stories";
+
+<Meta of={PaginationStories} />
+
+# Pagination
+
+A flexible pagination component for navigating through large datasets with customizable controls, keyboard navigation, and accessibility features.
+
+<Canvas of={PaginationStories.Default} />
+
+## Usage
+
+```tsx
+import { Pagination } from "@/components/ui/pagination";
+import { useState } from "react";
+
+function Example() {
+  const [page, setPage] = useState(1);
+
+  return (
+    <Pagination total={100} page={page} pageSize={10} onPageChange={setPage} />
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Core Props
+
+- **total** (required) - Total number of items in the dataset
+- **page** (required) - Current page number (1-indexed)
+- **pageSize** (required) - Number of items displayed per page
+- **onPageChange** (required) - Callback function when page changes `(page: number) => void`
+
+### Optional Props
+
+- **showFirstLast** - Display First/Last page buttons (default: true)
+- **showPrevNext** - Display Previous/Next buttons (default: true)
+- **siblingCount** - Number of page buttons to show on each side of current page (default: 1)
+
+## Features
+
+### Navigation Controls
+
+The pagination component provides multiple navigation options:
+
+- **First** - Jump to first page
+- **Previous** - Go to previous page
+- **Page Numbers** - Click specific page
+- **Next** - Go to next page
+- **Last** - Jump to last page
+
+### Smart Page Display
+
+The component intelligently displays page numbers based on:
+
+- Current page position
+- Total number of pages
+- Configured sibling count
+- Ellipsis (...) for skipped pages
+
+## Examples
+
+### Controlled State
+
+Manage pagination state in your component:
+
+```tsx
+function ControlledPagination() {
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const total = 100;
+
+  return (
+    <div className="space-y-4">
+      <Pagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+      />
+      <div className="text-center text-sm text-muted-foreground">
+        Page {page} of {Math.ceil(total / pageSize)}
+      </div>
+    </div>
+  );
+}
+```
+
+<Canvas of={PaginationStories.Controlled} />
+
+### Without First/Last Buttons
+
+Simplify the UI by hiding First/Last buttons:
+
+```tsx
+<Pagination
+  total={100}
+  page={page}
+  pageSize={10}
+  onPageChange={setPage}
+  showFirstLast={false}
+/>
+```
+
+<Canvas of={PaginationStories.WithoutFirstLast} />
+
+### Without Previous/Next Buttons
+
+Show only page number buttons:
+
+```tsx
+<Pagination
+  total={100}
+  page={page}
+  pageSize={10}
+  onPageChange={setPage}
+  showPrevNext={false}
+/>
+```
+
+<Canvas of={PaginationStories.WithoutPrevNext} />
+
+### Minimal Configuration
+
+Display only page numbers:
+
+```tsx
+<Pagination
+  total={100}
+  page={page}
+  pageSize={10}
+  onPageChange={setPage}
+  showFirstLast={false}
+  showPrevNext={false}
+/>
+```
+
+<Canvas of={PaginationStories.MinimalButtons} />
+
+### Adjusting Sibling Count
+
+Control how many page buttons appear on each side:
+
+```tsx
+// More page buttons visible
+<Pagination
+  total={500}
+  page={page}
+  pageSize={10}
+  onPageChange={setPage}
+  siblingCount={2}
+/>
+
+// Fewer page buttons visible
+<Pagination
+  total={500}
+  page={page}
+  pageSize={10}
+  onPageChange={setPage}
+  siblingCount={0}
+/>
+```
+
+<Canvas of={PaginationStories.MoreSiblings} />
+
+### With Table
+
+Common pattern for paginating table data:
+
+```tsx
+function PaginatedTable() {
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+  const allData = [...]; // Your full dataset
+
+  const currentData = allData.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
+
+  return (
+    <div className="space-y-4">
+      <DataTable columns={columns} data={currentData} />
+
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-muted-foreground">
+          Showing {(page - 1) * pageSize + 1}-
+          {Math.min(page * pageSize, allData.length)} of {allData.length} items
+        </div>
+        <Pagination
+          total={allData.length}
+          page={page}
+          pageSize={pageSize}
+          onPageChange={setPage}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+<Canvas of={PaginationStories.WithTable} />
+
+### Large Datasets
+
+Handle thousands of items efficiently:
+
+```tsx
+<Pagination total={1000} page={page} pageSize={10} onPageChange={setPage} />
+```
+
+<Canvas of={PaginationStories.LargeDataset} />
+
+### Dynamic Page Size
+
+Allow users to change items per page:
+
+```tsx
+function DynamicPageSize() {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const total = 100;
+
+  const handlePageSizeChange = (newSize: number) => {
+    setPageSize(newSize);
+    setPage(1); // Reset to first page
+  };
+
+  return (
+    <div className="space-y-4">
+      <select
+        value={pageSize}
+        onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+        className="rounded-md border px-3 py-1"
+      >
+        <option value={5}>5 per page</option>
+        <option value={10}>10 per page</option>
+        <option value={20}>20 per page</option>
+        <option value={50}>50 per page</option>
+      </select>
+
+      <Pagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+      />
+    </div>
+  );
+}
+```
+
+<Canvas of={PaginationStories.DifferentPageSizes} />
+
+### Edge Cases
+
+The component handles various edge cases automatically:
+
+<Canvas of={PaginationStories.EdgeCases} />
+
+## Best Practices
+
+### Do's
+
+- Always show item counts ("Showing 1-10 of 100 items")
+- Reset to page 1 when filters or search changes
+- Disable pagination when loading data
+- Provide page size options for user control (10, 25, 50, 100)
+- Use appropriate page sizes based on content (cards: 12, table rows: 20)
+- Show total count to set user expectations
+- Persist pagination state in URL for shareable links
+- Use siblingCount based on available space
+
+### Don'ts
+
+- Don't paginate small datasets (< 20 items)
+- Don't forget to handle page size changes properly
+- Don't allow navigation to invalid pages
+- Don't use tiny page sizes (< 5) for large datasets
+- Don't hide pagination controls when on first/last page
+- Don't show pagination for single-page results
+- Don't forget loading states during page changes
+- Don't make users scroll to find pagination controls
+
+## Accessibility
+
+### Keyboard Navigation
+
+The pagination component is fully keyboard accessible:
+
+- **Tab** - Navigate between pagination buttons
+- **Shift + Tab** - Navigate backwards
+- **Enter** or **Space** - Activate focused button
+- **Arrow keys** - Navigate between page buttons (optional)
+
+<Canvas of={PaginationStories.KeyboardNavigation} />
+
+### Screen Readers
+
+The component uses semantic HTML and ARIA attributes:
+
+```tsx
+// Automatic ARIA attributes:
+// - role="navigation" on container
+// - aria-label="Pagination Navigation"
+// - aria-current="page" on current page button
+// - aria-label on all buttons (e.g., "Go to page 3")
+```
+
+Button labels are descriptive:
+
+- "First page" for first button
+- "Previous page" for previous button
+- "Page 3" for numbered buttons
+- "Next page" for next button
+- "Last page" for last button
+
+### Visual Indicators
+
+- Current page has distinct visual styling
+- Disabled buttons (first/prev on page 1) have reduced opacity
+- Focus indicators meet WCAG contrast requirements
+- Button states (hover, active) are clearly visible
+- Ellipsis indicates hidden pages
+
+### Disabled States
+
+When on first page:
+
+- First button is disabled
+- Previous button is disabled
+- Cannot navigate backwards
+
+When on last page:
+
+- Next button is disabled
+- Last button is disabled
+- Cannot navigate forwards
+
+## Integration Patterns
+
+### With Server-Side Data
+
+Fetch data when page changes:
+
+```tsx
+function ServerPaginatedTable() {
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const [total, setTotal] = useState(0);
+  const pageSize = 20;
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const response = await fetch(
+        `/api/items?page=${page}&pageSize=${pageSize}`
+      );
+      const result = await response.json();
+      setData(result.items);
+      setTotal(result.total);
+      setLoading(false);
+    }
+    fetchData();
+  }, [page, pageSize]);
+
+  return (
+    <div className="space-y-4">
+      <DataTable columns={columns} data={data} loading={loading} />
+      <Pagination
+        total={total}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+      />
+    </div>
+  );
+}
+```
+
+### With URL State
+
+Persist pagination in URL for shareable links:
+
+```tsx
+import { useSearchParams } from "react-router-dom";
+
+function URLPaginatedTable() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = parseInt(searchParams.get("page") || "1", 10);
+
+  const handlePageChange = (newPage: number) => {
+    setSearchParams({ page: newPage.toString() });
+  };
+
+  return (
+    <Pagination
+      total={100}
+      page={page}
+      pageSize={10}
+      onPageChange={handlePageChange}
+    />
+  );
+}
+```
+
+### With Infinite Scroll
+
+Combine with infinite scroll for mobile:
+
+```tsx
+function HybridPagination() {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  if (isMobile) {
+    return <InfiniteScroll onLoadMore={loadMore} />;
+  }
+
+  return (
+    <Pagination
+      total={total}
+      page={page}
+      pageSize={pageSize}
+      onPageChange={setPage}
+    />
+  );
+}
+```
+
+### Calculating Total Pages
+
+Helper function for page calculations:
+
+```tsx
+function getTotalPages(total: number, pageSize: number): number {
+  return Math.ceil(total / pageSize);
+}
+
+function getPageRange(
+  page: number,
+  pageSize: number,
+  total: number
+): { start: number; end: number } {
+  const start = (page - 1) * pageSize + 1;
+  const end = Math.min(page * pageSize, total);
+  return { start, end };
+}
+```
+
+## Performance Tips
+
+### Memoize Callbacks
+
+Prevent unnecessary re-renders by memoizing the page change handler:
+
+```tsx
+import { useCallback } from "react";
+
+const handlePageChange = useCallback((newPage: number) => {
+  setPage(newPage);
+  // Fetch new data, scroll to top, etc.
+}, []);
+```
+
+### Virtual Scrolling
+
+For extremely large datasets (100,000+ items), consider:
+
+- Server-side pagination (only load current page)
+- Virtual scrolling for visible rows
+- Cursor-based pagination for real-time data
+
+### Smooth Navigation
+
+Enhance user experience:
+
+```tsx
+const handlePageChange = (newPage: number) => {
+  setPage(newPage);
+  // Scroll to top of table
+  tableRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Or window.scrollTo({ top: 0, behavior: "smooth" });
+};
+```
+
+## Common Pitfalls
+
+### Invalid Page Numbers
+
+Always validate page numbers:
+
+```tsx
+const handlePageChange = (newPage: number) => {
+  const totalPages = Math.ceil(total / pageSize);
+  const validPage = Math.max(1, Math.min(newPage, totalPages));
+  setPage(validPage);
+};
+```
+
+### Stale Data After Page Size Change
+
+Reset to page 1 when changing page size:
+
+```tsx
+const handlePageSizeChange = (newSize: number) => {
+  setPageSize(newSize);
+  setPage(1); // Important!
+};
+```
+
+### Missing Loading States
+
+Show loading during page transitions:
+
+```tsx
+<DataTable data={data} loading={isLoading} />
+<Pagination disabled={isLoading} {...props} />
+```
+
+## Related Components
+
+- [DataTable](/docs/components-data-table--docs) - Often paired with pagination
+- [Button](/docs/components-button--docs) - Used for navigation controls
+- [Select](/docs/components-select--docs) - For page size selection

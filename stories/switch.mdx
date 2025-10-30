@@ -1,0 +1,322 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as SwitchStories from "./switch.stories";
+
+<Meta of={SwitchStories} />
+
+# Switch
+
+A toggle switch component for enabling/disabling settings with support for labels, descriptions, and validation errors.
+
+<Canvas of={SwitchStories.WithLabel} />
+
+## Usage
+
+```tsx
+import { Switch } from "@/components/ui/switch";
+
+function Example() {
+  return (
+    <Switch
+      label="Enable notifications"
+      description="Receive push notifications on your device"
+    />
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Props
+
+- **label** - Optional label text displayed next to the switch
+- **description** - Optional helper text displayed below label
+- **error** - Error message to display below switch
+- **checked** - Toggle state (`true` or `false`)
+- **onCheckedChange** - Callback when switch state changes
+- **disabled** - Disable the switch
+- **containerClassName** - Additional classes for the wrapper container
+
+### States
+
+The switch has two primary states:
+
+- **Off** - Disabled/unchecked state (`checked={false}`)
+- **On** - Enabled/checked state (`checked={true}`)
+
+## Examples
+
+### Basic Usage
+
+Simple on/off toggle:
+
+```tsx
+<Switch label="Enable feature" />
+```
+
+<Canvas of={SwitchStories.Default} />
+
+### With Description
+
+Add context to the switch:
+
+```tsx
+<Switch
+  label="Dark mode"
+  description="Use dark color scheme for comfortable viewing"
+/>
+```
+
+<Canvas of={SwitchStories.WithDescription} />
+
+### With Error
+
+Show validation errors:
+
+```tsx
+<Switch
+  label="Required setting"
+  error="This setting must be enabled to continue"
+/>
+```
+
+<Canvas of={SwitchStories.WithError} />
+
+### Controlled Switch
+
+Manage state with React:
+
+```tsx
+const [checked, setChecked] = useState(false);
+
+<Switch
+  label="Controlled switch"
+  description="Toggle to change state"
+  checked={checked}
+  onCheckedChange={setChecked}
+/>;
+```
+
+<Canvas of={SwitchStories.Controlled} />
+
+### Settings Panel
+
+Complete preferences UI:
+
+```tsx
+const [settings, setSettings] = useState({
+  notifications: true,
+  emailUpdates: false,
+  darkMode: false,
+  analytics: true,
+});
+
+{
+  Object.entries(settings).map(([key, value]) => (
+    <Switch
+      key={key}
+      label={formatLabel(key)}
+      description={getDescription(key)}
+      checked={value}
+      onCheckedChange={(checked) =>
+        setSettings({ ...settings, [key]: checked })
+      }
+    />
+  ));
+}
+```
+
+<Canvas of={SwitchStories.SettingsExample} />
+
+### Form with Validation
+
+Validate required switches:
+
+```tsx
+const [agreed, setAgreed] = useState(false);
+const [showError, setShowError] = useState(false);
+
+<Switch
+  label="I agree to the terms and conditions"
+  description="Required to continue"
+  checked={agreed}
+  onCheckedChange={(checked) => {
+    setAgreed(checked);
+    setShowError(false);
+  }}
+  error={showError && !agreed ? "You must agree to the terms" : undefined}
+/>;
+```
+
+<Canvas of={SwitchStories.FormWithValidation} />
+
+### List of Toggles
+
+Multiple related switches:
+
+```tsx
+const [items, setItems] = useState([
+  { id: "1", label: "Feature A", enabled: true },
+  { id: "2", label: "Feature B", enabled: false },
+  { id: "3", label: "Feature C", enabled: true },
+]);
+
+{
+  items.map((item) => (
+    <Switch
+      key={item.id}
+      label={item.label}
+      checked={item.enabled}
+      onCheckedChange={() => toggleItem(item.id)}
+    />
+  ));
+}
+```
+
+<Canvas of={SwitchStories.CompactList} />
+
+### All States
+
+View all switch states:
+
+```tsx
+<Switch label="Off state" checked={false} />
+<Switch label="On state" checked={true} />
+<Switch label="Disabled off" disabled checked={false} />
+<Switch label="Disabled on" disabled checked={true} />
+<Switch label="With error" error="Error message" checked={false} />
+```
+
+<Canvas of={SwitchStories.AllStates} />
+
+## Best Practices
+
+### Do's
+
+- Use switches for boolean yes/no decisions
+- Provide clear, descriptive labels
+- Include descriptions for complex settings
+- Show immediate visual feedback when toggled
+- Disable switches when the option is unavailable
+- Group related switches together
+- Persist user preferences after changes
+
+### Don'ts
+
+- Don't use switches for mutually exclusive options
+- Don't use switches with multiple states (use tabs or radio buttons instead)
+- Don't make labels ambiguous or unclear
+- Don't toggle important settings without confirmation
+- Don't hide switch state in descriptions
+- Don't disable switches without explanation
+- Don't use switches for form submission
+
+## Accessibility
+
+### Keyboard Navigation
+
+- `Tab` - Focus the switch
+- `Space` - Toggle the switch state
+- `Shift + Tab` - Focus previous element
+- Focus visible with 2px ring indicator
+
+### Screen Readers
+
+Switches are fully accessible to screen readers:
+
+```tsx
+<Switch label="Enable notifications" description="Receive push notifications" />
+```
+
+The component automatically:
+
+- Associates label with switch via proper attributes
+- Announces current state (on/off)
+- Links descriptions via `aria-describedby`
+- Sets `aria-invalid="true"` when errors are present
+- Supports `aria-label` for icon-only switches
+
+### ARIA Attributes
+
+- `role="switch"` - Announces as a switch to screen readers
+- `aria-checked` - Announces current state
+- `aria-invalid="true"` - When error is present
+- `aria-describedby` - Links to description or error text
+- `aria-disabled` - When switch is disabled
+
+### Color Independence
+
+- Switch state is not conveyed by color alone
+- Visual indicators (on/off position) are always clear
+- Error messages include text, not just styling
+
+## Usage Patterns
+
+### Immediate Action
+
+Changes take effect immediately without save button:
+
+```tsx
+<Switch
+  label="Dark mode"
+  checked={darkMode}
+  onCheckedChange={(checked) => {
+    setDarkMode(checked);
+    localStorage.setItem("darkMode", checked);
+  }}
+/>
+```
+
+### With Confirmation
+
+Show confirmation for important changes:
+
+```tsx
+const [enabled, setEnabled] = useState(false);
+
+const handleToggle = (checked: boolean) => {
+  if (checked) {
+    if (window.confirm("Are you sure?")) {
+      setEnabled(true);
+    }
+  } else {
+    setEnabled(false);
+  }
+};
+
+<Switch
+  label="Dangerous feature"
+  checked={enabled}
+  onCheckedChange={handleToggle}
+/>;
+```
+
+### Dependent Settings
+
+Disable related switches based on state:
+
+```tsx
+const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+<div className="space-y-4">
+  <Switch
+    label="Enable notifications"
+    checked={notificationsEnabled}
+    onCheckedChange={setNotificationsEnabled}
+  />
+
+  <Switch
+    label="Email notifications"
+    checked={emailNotifications}
+    onCheckedChange={setEmailNotifications}
+    disabled={!notificationsEnabled}
+  />
+</div>;
+```
+
+## Related Components
+
+- [Checkbox](/docs/components-checkbox--docs) - For multiple independent options
+- [Select](/docs/components-select--docs) - For choosing from many options
+- [Input](/docs/components-input--docs) - For text-based settings

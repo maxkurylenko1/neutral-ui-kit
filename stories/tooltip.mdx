@@ -1,0 +1,633 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as TooltipStories from "./tooltip.stories";
+
+<Meta of={TooltipStories} />
+
+# Tooltip
+
+A lightweight tooltip component for displaying contextual information on hover or focus, built on Radix UI with full keyboard support.
+
+<Canvas of={TooltipStories.Default} />
+
+## Usage
+
+```tsx
+import { Tooltip } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+
+function Example() {
+  return (
+    <Tooltip content="This is a tooltip">
+      <Button>Hover me</Button>
+    </Tooltip>
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Core Props
+
+- **content** (required) - Tooltip content (string or ReactNode)
+- **side** - Position relative to trigger: `top` | `right` | `bottom` | `left` (default: `top`)
+- **align** - Alignment: `start` | `center` | `end` (default: `center`)
+- **delayDuration** - Delay before showing in milliseconds (default: 200)
+- **open** - Controlled open state
+- **onOpenChange** - Callback when open state changes
+- **sideOffset** - Distance from trigger in pixels (default: 4)
+
+## Position
+
+### All Sides
+
+Control where the tooltip appears:
+
+```tsx
+<Tooltip content="Tooltip on top" side="top">
+  <Button>Top</Button>
+</Tooltip>
+
+<Tooltip content="Tooltip on right" side="right">
+  <Button>Right</Button>
+</Tooltip>
+
+<Tooltip content="Tooltip on bottom" side="bottom">
+  <Button>Bottom</Button>
+</Tooltip>
+
+<Tooltip content="Tooltip on left" side="left">
+  <Button>Left</Button>
+</Tooltip>
+```
+
+<Canvas of={TooltipStories.AllSides} />
+
+## Examples
+
+### With Icon
+
+Show information icons with tooltips:
+
+```tsx
+import { Info } from "lucide-react";
+
+<Tooltip content="More information about this feature">
+  <button className="text-muted-foreground hover:text-foreground">
+    <Info className="h-4 w-4" />
+  </button>
+</Tooltip>;
+```
+
+<Canvas of={TooltipStories.WithIcon} />
+
+### Long Content
+
+Handle longer tooltip text:
+
+```tsx
+<Tooltip content="This is a longer tooltip with more detailed information that might span multiple lines">
+  <Button>Hover for details</Button>
+</Tooltip>
+```
+
+<Canvas of={TooltipStories.LongContent} />
+
+### Custom Delay
+
+Adjust show delay for different use cases:
+
+```tsx
+// Instant
+<Tooltip content="Instant" delayDuration={0}>
+  <Button>No delay</Button>
+</Tooltip>
+
+// Normal (default)
+<Tooltip content="Normal" delayDuration={200}>
+  <Button>200ms</Button>
+</Tooltip>
+
+// Slow
+<Tooltip content="Slow" delayDuration={1000}>
+  <Button>1000ms</Button>
+</Tooltip>
+```
+
+<Canvas of={TooltipStories.CustomDelay} />
+
+### Controlled State
+
+Control tooltip visibility programmatically:
+
+```tsx
+import { useState } from "react";
+
+function ControlledTooltip() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="space-y-4">
+      <Tooltip content="Controlled tooltip" open={open} onOpenChange={setOpen}>
+        <Button>Hover or focus</Button>
+      </Tooltip>
+
+      <Button onClick={() => setOpen(!open)}>Toggle</Button>
+    </div>
+  );
+}
+```
+
+<Canvas of={TooltipStories.Controlled} />
+
+### On Disabled Button
+
+Wrap disabled elements to show tooltips:
+
+```tsx
+<Tooltip content="This button is disabled">
+  <span className="inline-block">
+    <Button disabled>Disabled button</Button>
+  </span>
+</Tooltip>
+```
+
+<Canvas of={TooltipStories.OnDisabledButton} />
+
+### Help Text
+
+Common pattern for form field help:
+
+```tsx
+import { HelpCircle } from "lucide-react";
+
+<div className="flex items-center gap-2">
+  <label>Email address</label>
+  <Tooltip content="We'll never share your email with anyone else">
+    <button className="text-muted-foreground hover:text-foreground">
+      <HelpCircle className="h-4 w-4" />
+    </button>
+  </Tooltip>
+</div>;
+```
+
+<Canvas of={TooltipStories.HelpText} />
+
+### Form Example
+
+Use tooltips to provide field guidance:
+
+<Canvas of={TooltipStories.FormExample} />
+
+### Icon Buttons
+
+Add context to icon-only buttons:
+
+```tsx
+import { Settings, HelpCircle, Info } from "lucide-react";
+
+<Tooltip content="Settings">
+  <Button variant="outline" size="sm">
+    <Settings className="h-4 w-4" />
+  </Button>
+</Tooltip>;
+```
+
+<Canvas of={TooltipStories.IconButtons} />
+
+### Keyboard Accessible
+
+Tooltips appear on both hover and focus:
+
+<Canvas of={TooltipStories.KeyboardAccessible} />
+
+### Rich Content
+
+Include formatted content in tooltips:
+
+```tsx
+<Tooltip
+  content={
+    <div className="space-y-1">
+      <p className="font-semibold">Keyboard Shortcuts</p>
+      <p className="text-xs">⌘ + S - Save</p>
+      <p className="text-xs">⌘ + P - Print</p>
+    </div>
+  }
+>
+  <Button>Shortcuts</Button>
+</Tooltip>
+```
+
+<Canvas of={TooltipStories.RichContent} />
+
+## Best Practices
+
+### Do's
+
+- Use tooltips for supplementary information
+- Keep tooltip text concise (1-2 lines)
+- Provide tooltips for icon-only buttons
+- Use consistent delay duration across the app
+- Make tooltips keyboard accessible
+- Position tooltips to avoid obscuring content
+- Use tooltips to explain abbreviations or jargon
+- Include tooltips on disabled elements when helpful
+
+### Don'ts
+
+- Don't use tooltips for critical information
+- Don't put interactive elements in tooltips (use Popover instead)
+- Don't use very long text (> 3 lines)
+- Don't show tooltips immediately (use small delay)
+- Don't hide important actions in tooltips
+- Don't use tooltips on mobile (they don't work well)
+- Don't rely solely on tooltips for accessibility
+- Don't nest tooltips inside other tooltips
+
+## Accessibility
+
+### Keyboard Navigation
+
+Tooltips are fully keyboard accessible:
+
+- **Tab** - Focus trigger element
+- **Hover** - Shows tooltip on mouse over
+- **Focus** - Shows tooltip when element receives focus
+- **Esc** - Closes tooltip (when implemented)
+
+### Screen Readers
+
+Tooltips use proper ARIA attributes:
+
+- `role="tooltip"` on tooltip content
+- `aria-describedby` links trigger to tooltip
+- Content is announced when trigger is focused
+- Works with both mouse and keyboard users
+
+```tsx
+// Automatically accessible
+<Tooltip content="Help text">
+  <Button>Trigger</Button>
+</Tooltip>
+```
+
+### Disabled Elements
+
+Tooltips on disabled elements require special handling:
+
+```tsx
+// Wrap in span to make tooltip work
+<Tooltip content="This action is unavailable">
+  <span className="inline-block">
+    <Button disabled>Disabled</Button>
+  </span>
+</Tooltip>
+```
+
+### Focus Visible
+
+- Tooltips appear on keyboard focus
+- Do not trap focus
+- Dismiss when focus moves away
+- Support natural tab order
+
+### Color Independence
+
+- Don't rely only on color to convey meaning
+- Use clear, descriptive text
+- Supplement with icons when helpful
+- Ensure sufficient contrast
+
+## Common Patterns
+
+### Help Icons
+
+```tsx
+import { HelpCircle } from "lucide-react";
+
+function HelpIcon({ content }: { content: string }) {
+  return (
+    <Tooltip content={content}>
+      <button className="inline-flex text-muted-foreground hover:text-foreground">
+        <HelpCircle className="h-4 w-4" />
+      </button>
+    </Tooltip>
+  );
+}
+
+// Usage
+<div className="flex items-center gap-2">
+  <label>Password</label>
+  <HelpIcon content="Must be at least 8 characters" />
+</div>;
+```
+
+### Icon Button Grid
+
+```tsx
+import { Copy, Edit, Trash, Share } from "lucide-react";
+
+function ActionButtons() {
+  return (
+    <div className="flex gap-2">
+      <Tooltip content="Copy">
+        <Button variant="ghost" size="sm">
+          <Copy className="h-4 w-4" />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Edit">
+        <Button variant="ghost" size="sm">
+          <Edit className="h-4 w-4" />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Delete">
+        <Button variant="ghost" size="sm">
+          <Trash className="h-4 w-4" />
+        </Button>
+      </Tooltip>
+      <Tooltip content="Share">
+        <Button variant="ghost" size="sm">
+          <Share className="h-4 w-4" />
+        </Button>
+      </Tooltip>
+    </div>
+  );
+}
+```
+
+### Truncated Text
+
+```tsx
+function TruncatedText({ text }: { text: string }) {
+  return (
+    <Tooltip content={text}>
+      <span className="truncate max-w-[200px] block">{text}</span>
+    </Tooltip>
+  );
+}
+```
+
+### Status Indicators
+
+```tsx
+function StatusIndicator({ status }: { status: string }) {
+  const statusInfo = {
+    online: "Currently online",
+    away: "Away from keyboard",
+    offline: "Offline",
+  };
+
+  return (
+    <Tooltip content={statusInfo[status]}>
+      <div
+        className={cn(
+          "h-2 w-2 rounded-full",
+          status === "online" && "bg-success",
+          status === "away" && "bg-warning",
+          status === "offline" && "bg-muted"
+        )}
+      />
+    </Tooltip>
+  );
+}
+```
+
+### Data Abbreviations
+
+```tsx
+function MetricCard({ value, label, explanation }: Props) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-2xl font-bold">{value}</span>
+      <Tooltip content={explanation}>
+        <span className="text-sm text-muted-foreground">{label}</span>
+      </Tooltip>
+    </div>
+  );
+}
+
+// Usage
+<MetricCard
+  value="95%"
+  label="CTR"
+  explanation="Click-through rate: Percentage of users who clicked"
+/>;
+```
+
+### Navigation Hint
+
+```tsx
+function NavItem({ icon: Icon, label, href }: Props) {
+  return (
+    <Tooltip content={label} side="right">
+      <a href={href} className="flex items-center justify-center h-10 w-10">
+        <Icon className="h-5 w-5" />
+      </a>
+    </Tooltip>
+  );
+}
+```
+
+## Mobile Considerations
+
+### Touch Devices
+
+Tooltips don't work well on touch devices:
+
+```tsx
+// Hide on mobile
+<div className="hidden md:block">
+  <Tooltip content="Desktop only">
+    <Button>Hover me</Button>
+  </Tooltip>
+</div>;
+
+// Or use Popover for mobile
+const isMobile = useMediaQuery("(max-width: 768px)");
+
+{
+  isMobile ? (
+    <Popover content="Mobile friendly">
+      <Button>Click me</Button>
+    </Popover>
+  ) : (
+    <Tooltip content="Desktop hover">
+      <Button>Hover me</Button>
+    </Tooltip>
+  );
+}
+```
+
+### Alternative Patterns
+
+For mobile-friendly alternatives:
+
+- Use Popover for clickable info
+- Show inline help text
+- Use expandable sections
+- Provide dedicated help pages
+
+## Advanced Usage
+
+### Conditional Tooltips
+
+Show tooltip only when needed:
+
+```tsx
+function ConditionalTooltip({ text, showTooltip }: Props) {
+  if (!showTooltip) {
+    return <span>{text}</span>;
+  }
+
+  return (
+    <Tooltip content="Additional information">
+      <span>{text}</span>
+    </Tooltip>
+  );
+}
+```
+
+### Multiple Triggers
+
+Share tooltip across elements:
+
+```tsx
+function SharedTooltip() {
+  const tooltipContent = "Shared tooltip content";
+
+  return (
+    <div className="flex gap-2">
+      <Tooltip content={tooltipContent}>
+        <Button>Option 1</Button>
+      </Tooltip>
+      <Tooltip content={tooltipContent}>
+        <Button>Option 2</Button>
+      </Tooltip>
+    </div>
+  );
+}
+```
+
+### Dynamic Content
+
+Update tooltip content dynamically:
+
+```tsx
+function DynamicTooltip({ count }: Props) {
+  return (
+    <Tooltip content={`${count} items selected`}>
+      <Button>Selection</Button>
+    </Tooltip>
+  );
+}
+```
+
+## Performance Tips
+
+### Avoid Heavy Content
+
+Keep tooltip content lightweight:
+
+```tsx
+// ❌ Bad - heavy component
+<Tooltip content={<HeavyComponent />}>
+  <Button>Hover</Button>
+</Tooltip>
+
+// ✅ Good - simple content
+<Tooltip content="Simple text">
+  <Button>Hover</Button>
+</Tooltip>
+```
+
+### Debounce for Lists
+
+For many tooltips in lists:
+
+```tsx
+{
+  items.map((item) => (
+    <Tooltip
+      key={item.id}
+      content={item.description}
+      delayDuration={300} // Slight delay helps performance
+    >
+      <div>{item.name}</div>
+    </Tooltip>
+  ));
+}
+```
+
+## Common Pitfalls
+
+### Forgetting Wrapper for Disabled
+
+```tsx
+// ❌ Won't work
+<Tooltip content="Help">
+  <Button disabled>Disabled</Button>
+</Tooltip>
+
+// ✅ Correct
+<Tooltip content="Help">
+  <span>
+    <Button disabled>Disabled</Button>
+  </span>
+</Tooltip>
+```
+
+### Too Much Information
+
+```tsx
+// ❌ Too long
+<Tooltip content="This is a very long tooltip with lots of information that should probably be in a popover or modal instead">
+  <Button>Hover</Button>
+</Tooltip>
+
+// ✅ Concise
+<Tooltip content="Quick help text">
+  <Button>Hover</Button>
+</Tooltip>
+```
+
+### Missing Content
+
+```tsx
+// ❌ Empty tooltip
+<Tooltip content="">
+  <Button>Hover</Button>
+</Tooltip>;
+
+// ✅ Conditional rendering
+{
+  helpText && (
+    <Tooltip content={helpText}>
+      <Button>Hover</Button>
+    </Tooltip>
+  );
+}
+```
+
+## Tooltip vs Popover
+
+Choose the right component:
+
+**Use Tooltip when:**
+
+- Content is brief (1-2 lines)
+- Information is supplementary
+- No user interaction needed
+- Showing on hover/focus
+
+**Use Popover when:**
+
+- Content is longer or complex
+- Interactive elements needed
+- User needs to click to open
+- Better for mobile
+
+## Related Components
+
+- [Dialog](/docs/components-dialog--docs) - For critical information

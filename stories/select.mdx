@@ -1,0 +1,564 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as SelectStories from "./select.stories";
+
+<Meta of={SelectStories} />
+
+# Select
+
+A customizable select dropdown component built on Radix UI with support for grouping, disabled options, and form integration.
+
+<Canvas of={SelectStories.Default} />
+
+## Usage
+
+```tsx
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+function Example() {
+  return (
+    <Select>
+      <SelectTrigger>
+        <SelectValue placeholder="Select an option" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="option1">Option 1</SelectItem>
+        <SelectItem value="option2">Option 2</SelectItem>
+        <SelectItem value="option3">Option 3</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Core Props
+
+**Select**
+
+- **defaultValue** - Default selected value (uncontrolled)
+- **value** - Controlled selected value
+- **onValueChange** - Callback when value changes `(value: string) => void`
+- **disabled** - Disable the entire select
+- **required** - Mark as required field for forms
+- **name** - Name attribute for form submission
+- **dir** - Reading direction (ltr | rtl)
+
+**SelectTrigger**
+
+- **className** - Custom CSS classes
+- **disabled** - Disable the trigger button
+
+**SelectItem**
+
+- **value** (required) - Unique value for the option
+- **disabled** - Disable specific option
+
+## Components
+
+The select consists of several composable components:
+
+- **Select** - Root container component
+- **SelectTrigger** - Button that opens the dropdown
+- **SelectValue** - Displays the selected value or placeholder
+- **SelectContent** - Dropdown panel containing options
+- **SelectItem** - Individual selectable options
+- **SelectGroup** - Groups related options together
+- **SelectLabel** - Labels for option groups
+- **SelectSeparator** - Visual divider between groups
+
+## Examples
+
+### With Default Value
+
+Set an initial value in uncontrolled mode:
+
+```tsx
+<Select defaultValue="apple">
+  <SelectTrigger>
+    <SelectValue />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+    <SelectItem value="orange">Orange</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+<Canvas of={SelectStories.WithDefaultValue} />
+
+### With Groups
+
+Organize options into logical groups:
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select a fruit" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectGroup>
+      <SelectLabel>Fruits</SelectLabel>
+      <SelectItem value="apple">Apple</SelectItem>
+      <SelectItem value="banana">Banana</SelectItem>
+      <SelectItem value="orange">Orange</SelectItem>
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectLabel>Vegetables</SelectLabel>
+      <SelectItem value="carrot">Carrot</SelectItem>
+      <SelectItem value="potato">Potato</SelectItem>
+      <SelectItem value="tomato">Tomato</SelectItem>
+    </SelectGroup>
+  </SelectContent>
+</Select>
+```
+
+<Canvas of={SelectStories.WithGroups} />
+
+### With Disabled Options
+
+Disable specific options while keeping others selectable:
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select an option" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2" disabled>
+      Option 2 (disabled)
+    </SelectItem>
+    <SelectItem value="option3">Option 3</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+<Canvas of={SelectStories.WithDisabledOptions} />
+
+### Disabled State
+
+Disable the entire select component:
+
+```tsx
+<Select disabled>
+  <SelectTrigger>
+    <SelectValue placeholder="Disabled select" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+    <SelectItem value="option2">Option 2</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+<Canvas of={SelectStories.Disabled} />
+
+### Controlled State
+
+Control the select value from parent component:
+
+```tsx
+import { useState } from "react";
+
+function ControlledSelect() {
+  const [value, setValue] = useState("");
+
+  return (
+    <div className="space-y-4">
+      <Select value={value} onValueChange={setValue}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select an option" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="option1">Option 1</SelectItem>
+          <SelectItem value="option2">Option 2</SelectItem>
+          <SelectItem value="option3">Option 3</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <p>Selected: {value || "none"}</p>
+      <button onClick={() => setValue("")}>Clear</button>
+    </div>
+  );
+}
+```
+
+<Canvas of={SelectStories.Controlled} />
+
+### Long Lists
+
+Handle long lists of options with scrolling:
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select a country" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="us">United States</SelectItem>
+    <SelectItem value="uk">United Kingdom</SelectItem>
+    <SelectItem value="ca">Canada</SelectItem>
+    {/* ... many more options */}
+  </SelectContent>
+</Select>
+```
+
+<Canvas of={SelectStories.LongList} />
+
+### In Forms
+
+Integrate with form handling:
+
+```tsx
+function FormExample() {
+  const [formData, setFormData] = useState({
+    country: "",
+    language: "",
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Select
+        value={formData.country}
+        onValueChange={(value) => setFormData({ ...formData, country: value })}
+        name="country"
+        required
+      >
+        <SelectTrigger>
+          <SelectValue placeholder="Select a country" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="us">United States</SelectItem>
+          <SelectItem value="uk">United Kingdom</SelectItem>
+        </SelectContent>
+      </Select>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
+<Canvas of={SelectStories.InForm} />
+
+### Multiple Groups
+
+Create multiple organized sections:
+
+<Canvas of={SelectStories.MultipleGroups} />
+
+### Empty State
+
+Handle cases with no available options:
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="No options available" />
+  </SelectTrigger>
+  <SelectContent>
+    <div className="py-6 text-center text-sm text-muted-foreground">
+      No results found
+    </div>
+  </SelectContent>
+</Select>
+```
+
+<Canvas of={SelectStories.EmptyState} />
+
+## Best Practices
+
+### Do's
+
+- Use clear, descriptive option labels
+- Group related options with SelectGroup
+- Provide helpful placeholder text
+- Use disabled state for temporarily unavailable options
+- Set appropriate default values when needed
+- Add labels above selects in forms
+- Use required attribute for mandatory fields
+- Keep option lists scannable (consider search for > 20 items)
+
+### Don'ts
+
+- Don't use select for 2-3 options (use radio buttons instead)
+- Don't omit placeholder text
+- Don't make option labels too long (> 50 characters)
+- Don't use select for primary navigation
+- Don't nest selects too deeply
+- Don't forget to handle empty states
+- Don't use tiny font sizes (< 14px)
+- Don't put form submission logic inside onValueChange
+
+## Accessibility
+
+### Keyboard Navigation
+
+The select is fully keyboard accessible:
+
+- **Tab** - Focus the select trigger
+- **Enter** or **Space** - Open the dropdown
+- **Arrow Down/Up** - Navigate between options
+- **Home** - Jump to first option
+- **End** - Jump to last option
+- **Esc** - Close dropdown
+- **Type to search** - Jump to option starting with typed character
+
+<Canvas of={SelectStories.KeyboardNavigation} />
+
+### Screen Readers
+
+The component uses proper ARIA attributes:
+
+- `role="combobox"` on trigger
+- `aria-expanded` indicates open/closed state
+- `aria-controls` links trigger to content
+- `aria-labelledby` associates label with select
+- `aria-selected` indicates selected option
+- `aria-disabled` for disabled options
+
+Always pair with labels for forms:
+
+```tsx
+<label htmlFor="country-select">Country</label>
+<Select name="country">
+  <SelectTrigger id="country-select">
+    <SelectValue placeholder="Select country" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="us">United States</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Focus Management
+
+- Focus automatically returns to trigger when closed
+- Focus visible with clear ring indicator
+- Disabled state prevents focus
+- Selected option receives focus when opened
+
+### Required Fields
+
+Mark required fields properly:
+
+```tsx
+<Select required name="required-field">
+  <SelectTrigger>
+    <SelectValue placeholder="Required field *" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="option1">Option 1</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Disabled States
+
+Disabled selects:
+
+- Cannot be focused or opened
+- Show reduced opacity (50%)
+- Include `disabled` attribute for assistive tech
+- Should be used sparingly
+
+## Common Patterns
+
+### Country Selector
+
+```tsx
+<Select>
+  <SelectTrigger>
+    <SelectValue placeholder="Select country" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="us">🇺🇸 United States</SelectItem>
+    <SelectItem value="uk">🇬🇧 United Kingdom</SelectItem>
+    <SelectItem value="ca">🇨🇦 Canada</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Status Filter
+
+```tsx
+<Select defaultValue="all">
+  <SelectTrigger>
+    <SelectValue />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="all">All Status</SelectItem>
+    <SelectItem value="active">Active</SelectItem>
+    <SelectItem value="pending">Pending</SelectItem>
+    <SelectItem value="inactive">Inactive</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Sort Dropdown
+
+```tsx
+<Select value={sortBy} onValueChange={setSortBy}>
+  <SelectTrigger className="w-[180px]">
+    <SelectValue />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="name">Name</SelectItem>
+    <SelectItem value="date">Date</SelectItem>
+    <SelectItem value="popularity">Popularity</SelectItem>
+  </SelectContent>
+</Select>
+```
+
+### Cascading Selects
+
+```tsx
+function CascadingSelects() {
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+
+  const cities = getCitiesByCountry(country);
+
+  return (
+    <>
+      <Select value={country} onValueChange={setCountry}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select country" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="us">United States</SelectItem>
+          <SelectItem value="uk">United Kingdom</SelectItem>
+        </SelectContent>
+      </Select>
+
+      <Select value={city} onValueChange={setCity} disabled={!country}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select city" />
+        </SelectTrigger>
+        <SelectContent>
+          {cities.map((city) => (
+            <SelectItem key={city.value} value={city.value}>
+              {city.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </>
+  );
+}
+```
+
+## Form Integration
+
+### With React Hook Form
+
+```tsx
+import { useForm, Controller } from "react-hook-form";
+
+function FormWithSelect() {
+  const { control, handleSubmit } = useForm();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="country"
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <Select value={field.value} onValueChange={field.onChange}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select country" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="us">United States</SelectItem>
+              <SelectItem value="uk">United Kingdom</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
+      />
+    </form>
+  );
+}
+```
+
+### With Validation
+
+```tsx
+function ValidatedSelect() {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+
+  const handleChange = (newValue: string) => {
+    setValue(newValue);
+    if (newValue) {
+      setError("");
+    }
+  };
+
+  const handleBlur = () => {
+    if (!value) {
+      setError("This field is required");
+    }
+  };
+
+  return (
+    <div>
+      <Select value={value} onValueChange={handleChange} required>
+        <SelectTrigger className={error ? "border-destructive" : ""}>
+          <SelectValue placeholder="Select option" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="option1">Option 1</SelectItem>
+        </SelectContent>
+      </Select>
+      {error && <p className="text-sm text-destructive mt-1">{error}</p>}
+    </div>
+  );
+}
+```
+
+## Performance Tips
+
+### Large Lists
+
+For very large option lists (100+ items):
+
+1. Consider using a searchable select/combobox instead
+2. Implement virtual scrolling
+3. Use lazy loading for options
+4. Add search/filter functionality
+
+### Memoization
+
+Memoize option lists to prevent re-renders:
+
+```tsx
+const options = useMemo(
+  () => [
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    // ...
+  ],
+  []
+);
+```
+
+## Related Components
+
+- [Checkbox](/docs/components-checkbox--docs) - For multiple selections
+- [Input](/docs/components-input--docs) - For text input fields

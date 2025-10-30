@@ -1,0 +1,648 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as TabsStories from "./tabs.stories";
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+A flexible tabs component built on Radix UI for organizing content into separate views, with support for keyboard navigation, lazy loading, and controlled state.
+
+<Canvas of={TabsStories.Default} />
+
+## Usage
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
+function Example() {
+  return (
+    <Tabs defaultValue="tab1">
+      <TabsList>
+        <TabsTrigger value="tab1">Account</TabsTrigger>
+        <TabsTrigger value="tab2">Password</TabsTrigger>
+        <TabsTrigger value="tab3">Settings</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1">
+        <p>Account content</p>
+      </TabsContent>
+      <TabsContent value="tab2">
+        <p>Password content</p>
+      </TabsContent>
+      <TabsContent value="tab3">
+        <p>Settings content</p>
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Core Props
+
+**Tabs**
+
+- **defaultValue** - Default active tab (uncontrolled)
+- **value** - Controlled active tab value
+- **onValueChange** - Callback when active tab changes `(value: string) => void`
+- **orientation** - Tab list orientation (horizontal | vertical)
+- **dir** - Reading direction (ltr | rtl)
+
+**TabsTrigger**
+
+- **value** (required) - Unique identifier for the tab
+- **disabled** - Disable specific tab
+- **className** - Custom CSS classes
+
+**TabsContent**
+
+- **value** (required) - Matches TabsTrigger value
+- **forceMount** - Keep content mounted when inactive
+- **lazy** - Lazy load content only when tab is first activated
+
+## Components
+
+The tabs component consists of four main parts:
+
+- **Tabs** - Root container component
+- **TabsList** - Container for tab triggers
+- **TabsTrigger** - Clickable tab buttons
+- **TabsContent** - Content panels for each tab
+
+## Examples
+
+### With Cards
+
+Enhance tab content with card containers:
+
+```tsx
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+    <TabsTrigger value="reports">Reports</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">
+    <div className="rounded-lg border bg-card p-6">
+      <h3 className="text-lg font-semibold mb-2">Overview</h3>
+      <p className="text-sm text-muted-foreground">
+        View a summary of your account activity.
+      </p>
+    </div>
+  </TabsContent>
+  {/* Other tabs... */}
+</Tabs>
+```
+
+<Canvas of={TabsStories.WithCards} />
+
+### Lazy Loading
+
+Defer rendering of tab content until the tab is activated:
+
+```tsx
+<Tabs defaultValue="tab1">
+  <TabsList>
+    <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+    <TabsTrigger value="tab2">Tab 2 (Lazy)</TabsTrigger>
+    <TabsTrigger value="tab3">Tab 3 (Lazy)</TabsTrigger>
+  </TabsList>
+  <TabsContent value="tab1">
+    <ExpensiveComponent />
+  </TabsContent>
+  <TabsContent value="tab2" lazy>
+    <ExpensiveComponent />
+  </TabsContent>
+  <TabsContent value="tab3" lazy>
+    <ExpensiveComponent />
+  </TabsContent>
+</Tabs>
+```
+
+<Canvas of={TabsStories.LazyMount} />
+
+### Controlled State
+
+Control the active tab from parent component:
+
+```tsx
+import { useState } from "react";
+
+function ControlledTabs() {
+  const [activeTab, setActiveTab] = useState("account");
+
+  return (
+    <div className="space-y-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          <p>Account settings</p>
+        </TabsContent>
+        <TabsContent value="password">
+          <p>Password settings</p>
+        </TabsContent>
+        <TabsContent value="notifications">
+          <p>Notification preferences</p>
+        </TabsContent>
+      </Tabs>
+
+      <p>Active tab: {activeTab}</p>
+      <button onClick={() => setActiveTab("account")}>Go to Account</button>
+    </div>
+  );
+}
+```
+
+<Canvas of={TabsStories.Controlled} />
+
+### With Forms
+
+Create tabbed forms for multi-step or categorized input:
+
+```tsx
+<Tabs defaultValue="signin">
+  <TabsList className="grid w-full grid-cols-2">
+    <TabsTrigger value="signin">Sign In</TabsTrigger>
+    <TabsTrigger value="signup">Sign Up</TabsTrigger>
+  </TabsList>
+  <TabsContent value="signin">
+    <form className="space-y-4">
+      <Input label="Email" type="email" />
+      <Input label="Password" type="password" />
+      <Button className="w-full">Sign In</Button>
+    </form>
+  </TabsContent>
+  <TabsContent value="signup">
+    <form className="space-y-4">
+      <Input label="Name" />
+      <Input label="Email" type="email" />
+      <Input label="Password" type="password" />
+      <Button className="w-full">Create Account</Button>
+    </form>
+  </TabsContent>
+</Tabs>
+```
+
+<Canvas of={TabsStories.WithForms} />
+
+### Disabled Tabs
+
+Disable specific tabs when actions are unavailable:
+
+```tsx
+<Tabs defaultValue="tab1">
+  <TabsList>
+    <TabsTrigger value="tab1">Enabled</TabsTrigger>
+    <TabsTrigger value="tab2" disabled>
+      Disabled
+    </TabsTrigger>
+    <TabsTrigger value="tab3">Enabled</TabsTrigger>
+  </TabsList>
+  <TabsContent value="tab1">
+    <p>This tab is enabled.</p>
+  </TabsContent>
+  <TabsContent value="tab3">
+    <p>This tab is also enabled.</p>
+  </TabsContent>
+</Tabs>
+```
+
+<Canvas of={TabsStories.Disabled} />
+
+### Full Width Tabs
+
+Make tabs fill the entire width:
+
+```tsx
+<Tabs defaultValue="all" className="w-full">
+  <TabsList className="grid w-full grid-cols-3">
+    <TabsTrigger value="all">All</TabsTrigger>
+    <TabsTrigger value="active">Active</TabsTrigger>
+    <TabsTrigger value="archived">Archived</TabsTrigger>
+  </TabsList>
+  <TabsContent value="all">
+    <p>All items</p>
+  </TabsContent>
+  <TabsContent value="active">
+    <p>Active items</p>
+  </TabsContent>
+  <TabsContent value="archived">
+    <p>Archived items</p>
+  </TabsContent>
+</Tabs>
+```
+
+<Canvas of={TabsStories.FullWidth} />
+
+### Many Tabs
+
+Handle multiple tabs with horizontal scrolling:
+
+<Canvas of={TabsStories.ManyTabs} />
+
+## Best Practices
+
+### Do's
+
+- Use clear, concise tab labels (1-2 words)
+- Limit to 5-7 tabs for better usability
+- Keep related content in the same tab
+- Use lazy loading for heavy content
+- Provide visual feedback for active tab
+- Make tabs keyboard accessible
+- Order tabs by importance or workflow
+- Use consistent content structure across tabs
+
+### Don'ts
+
+- Don't use tabs for sequential steps (use stepper instead)
+- Don't nest tabs more than one level deep
+- Don't use tabs for navigation (use nav menu instead)
+- Don't make tab content too long (consider scrolling)
+- Don't hide critical actions in less-visible tabs
+- Don't use tabs for only 2 options (use toggle instead)
+- Don't change tab order dynamically
+- Don't forget to handle empty states
+
+## Accessibility
+
+### Keyboard Navigation
+
+The tabs component is fully keyboard accessible:
+
+- **Tab** - Focus the tab list
+- **Arrow Left/Right** - Navigate between tabs (horizontal)
+- **Arrow Up/Down** - Navigate between tabs (vertical)
+- **Home** - Jump to first tab
+- **End** - Jump to last tab
+- **Enter** or **Space** - Activate focused tab
+
+<Canvas of={TabsStories.KeyboardNavigation} />
+
+### Screen Readers
+
+The component uses proper ARIA attributes:
+
+- `role="tablist"` on TabsList
+- `role="tab"` on TabsTrigger
+- `role="tabpanel"` on TabsContent
+- `aria-selected` indicates active tab
+- `aria-controls` links tab to its panel
+- `aria-labelledby` associates panel with tab
+- `aria-disabled` for disabled tabs
+
+### Focus Management
+
+- Active tab receives visual focus indicator
+- Focus moves to newly activated tab
+- Disabled tabs are skipped during navigation
+- Focus visible with clear ring indicator
+- Focus returns to trigger after panel interaction
+
+### Labeling
+
+Always use descriptive labels:
+
+```tsx
+<TabsTrigger value="profile" aria-label="User profile settings">
+  Profile
+</TabsTrigger>
+```
+
+### Hidden Content
+
+Inactive tab panels are:
+
+- Hidden with `display: none` or `hidden` attribute
+- Not in tab order
+- Not announced by screen readers
+- Removed from accessibility tree
+
+## Common Patterns
+
+### Settings Tabs
+
+```tsx
+<Tabs defaultValue="general">
+  <TabsList>
+    <TabsTrigger value="general">General</TabsTrigger>
+    <TabsTrigger value="security">Security</TabsTrigger>
+    <TabsTrigger value="notifications">Notifications</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+  </TabsList>
+  <TabsContent value="general">{/* General settings form */}</TabsContent>
+  {/* Other tabs... */}
+</Tabs>
+```
+
+### Dashboard Sections
+
+```tsx
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+    <TabsTrigger value="reports">Reports</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">
+    <DashboardOverview />
+  </TabsContent>
+  {/* Other tabs... */}
+</Tabs>
+```
+
+### Filter Tabs
+
+```tsx
+function FilteredList() {
+  const [filter, setFilter] = useState("all");
+
+  return (
+    <Tabs value={filter} onValueChange={setFilter}>
+      <TabsList>
+        <TabsTrigger value="all">All ({counts.all})</TabsTrigger>
+        <TabsTrigger value="active">Active ({counts.active})</TabsTrigger>
+        <TabsTrigger value="completed">
+          Completed ({counts.completed})
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="all">
+        <ItemList items={allItems} />
+      </TabsContent>
+      <TabsContent value="active">
+        <ItemList items={activeItems} />
+      </TabsContent>
+      <TabsContent value="completed">
+        <ItemList items={completedItems} />
+      </TabsContent>
+    </Tabs>
+  );
+}
+```
+
+### Responsive Tabs
+
+```tsx
+function ResponsiveTabs() {
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  if (isMobile) {
+    return <Accordion>{/* Mobile version */}</Accordion>;
+  }
+
+  return (
+    <Tabs defaultValue="tab1">
+      <TabsList>
+        <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+        <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+      </TabsList>
+      {/* Tab content */}
+    </Tabs>
+  );
+}
+```
+
+## Integration Patterns
+
+### With URL State
+
+Sync active tab with URL for shareable links:
+
+```tsx
+import { useSearchParams } from "react-router-dom";
+
+function URLTabs() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get("tab") || "overview";
+
+  const handleTabChange = (value: string) => {
+    setSearchParams({ tab: value });
+  };
+
+  return (
+    <Tabs value={activeTab} onValueChange={handleTabChange}>
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+      </TabsList>
+      {/* Tab content */}
+    </Tabs>
+  );
+}
+```
+
+### With Form State
+
+Preserve form data across tabs:
+
+```tsx
+function FormTabs() {
+  const [formData, setFormData] = useState({
+    personal: {},
+    contact: {},
+    preferences: {},
+  });
+
+  return (
+    <Tabs defaultValue="personal">
+      <TabsList>
+        <TabsTrigger value="personal">Personal</TabsTrigger>
+        <TabsTrigger value="contact">Contact</TabsTrigger>
+        <TabsTrigger value="preferences">Preferences</TabsTrigger>
+      </TabsList>
+      <TabsContent value="personal">
+        <PersonalForm
+          data={formData.personal}
+          onChange={(data) => setFormData({ ...formData, personal: data })}
+        />
+      </TabsContent>
+      {/* Other tabs... */}
+    </Tabs>
+  );
+}
+```
+
+### With Validation
+
+Show validation errors in tabs:
+
+```tsx
+function ValidatedTabs() {
+  const [errors, setErrors] = useState({
+    personal: false,
+    contact: true,
+    preferences: false,
+  });
+
+  return (
+    <Tabs defaultValue="personal">
+      <TabsList>
+        <TabsTrigger value="personal">
+          Personal
+          {errors.personal && (
+            <Badge variant="destructive" className="ml-2">
+              !
+            </Badge>
+          )}
+        </TabsTrigger>
+        <TabsTrigger value="contact">
+          Contact
+          {errors.contact && (
+            <Badge variant="destructive" className="ml-2">
+              !
+            </Badge>
+          )}
+        </TabsTrigger>
+        <TabsTrigger value="preferences">Preferences</TabsTrigger>
+      </TabsList>
+      {/* Tab content */}
+    </Tabs>
+  );
+}
+```
+
+## Performance Tips
+
+### Lazy Loading
+
+Use lazy prop to defer rendering:
+
+```tsx
+<TabsContent value="heavy-content" lazy>
+  <ExpensiveComponent />
+</TabsContent>
+```
+
+### Memoization
+
+Memoize expensive tab content:
+
+```tsx
+const TabContent = memo(() => {
+  return <ExpensiveComponent />;
+});
+
+<TabsContent value="tab1">
+  <TabContent />
+</TabsContent>;
+```
+
+### Code Splitting
+
+Split large tab bundles:
+
+```tsx
+const AnalyticsTab = lazy(() => import("./AnalyticsTab"));
+const ReportsTab = lazy(() => import("./ReportsTab"));
+
+<TabsContent value="analytics">
+  <Suspense fallback={<Skeleton />}>
+    <AnalyticsTab />
+  </Suspense>
+</TabsContent>;
+```
+
+### Conditional Rendering
+
+Only render active tab content:
+
+```tsx
+function OptimizedTabs() {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <TabsList>
+        <TabsTrigger value="overview">Overview</TabsTrigger>
+        <TabsTrigger value="analytics">Analytics</TabsTrigger>
+      </TabsList>
+      {activeTab === "overview" && (
+        <TabsContent value="overview">
+          <Overview />
+        </TabsContent>
+      )}
+      {activeTab === "analytics" && (
+        <TabsContent value="analytics">
+          <Analytics />
+        </TabsContent>
+      )}
+    </Tabs>
+  );
+}
+```
+
+## Vertical Tabs
+
+For specific use cases:
+
+```tsx
+<Tabs defaultValue="tab1" orientation="vertical" className="flex">
+  <TabsList className="flex-col">
+    <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+    <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+    <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+  </TabsList>
+  <div className="flex-1 ml-4">
+    <TabsContent value="tab1">Content 1</TabsContent>
+    <TabsContent value="tab2">Content 2</TabsContent>
+    <TabsContent value="tab3">Content 3</TabsContent>
+  </div>
+</Tabs>
+```
+
+## Common Pitfalls
+
+### Missing Keys
+
+Always provide unique value props:
+
+```tsx
+// Bad
+<TabsTrigger>Tab 1</TabsTrigger>
+
+// Good
+<TabsTrigger value="tab1">Tab 1</TabsTrigger>
+```
+
+### Nested Forms
+
+Avoid nesting forms within tabs:
+
+```tsx
+// Bad - nested forms
+<Tabs defaultValue="tab1">
+  <form>
+    <TabsContent value="tab1">
+      <form>...</form>
+    </TabsContent>
+  </form>
+</Tabs>
+
+// Good - form outside tabs
+<form>
+  <Tabs defaultValue="tab1">
+    <TabsContent value="tab1">...</TabsContent>
+  </Tabs>
+</form>
+```
+
+### Inconsistent Content
+
+Maintain similar structure across tabs:
+
+```tsx
+// Good - consistent structure
+<TabsContent value="tab1">
+  <Card>
+    <CardHeader>...</CardHeader>
+    <CardContent>...</CardContent>
+  </Card>
+</TabsContent>
+```

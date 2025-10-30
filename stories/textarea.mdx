@@ -1,0 +1,570 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as TextareaStories from "./textarea.stories";
+
+<Meta of={TextareaStories} />
+
+# Textarea
+
+A flexible multi-line text input component with support for auto-resizing, character counting, labels, helper text, and error states.
+
+<Canvas of={TextareaStories.Default} />
+
+## Usage
+
+```tsx
+import { Textarea } from "@/components/ui/textarea";
+
+function Example() {
+  return (
+    <Textarea label="Description" placeholder="Enter your description..." />
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Core Props
+
+- **label** - Label text displayed above the textarea
+- **placeholder** - Placeholder text when empty
+- **error** - Error message displayed below the textarea
+- **helperText** - Helper text displayed below the textarea
+- **disabled** - Disable the textarea
+- **readOnly** - Make textarea read-only
+- **required** - Mark as required field
+- **rows** - Number of visible text rows
+- **maxLength** - Maximum number of characters allowed
+
+### Resize Options
+
+- **resize** - Resize behavior: `none` | `vertical` | `horizontal` | `both` (default: `vertical`)
+- **autoResize** - Auto-resize based on content
+- **minRows** - Minimum rows when auto-resize is enabled (default: 3)
+- **maxRows** - Maximum rows when auto-resize is enabled
+
+## Features
+
+### Auto-Resize
+
+The textarea can automatically grow and shrink based on content:
+
+```tsx
+<Textarea
+  label="Auto-resizing Textarea"
+  placeholder="Type and watch it grow..."
+  autoResize
+  minRows={3}
+  maxRows={10}
+/>
+```
+
+<Canvas of={TextareaStories.AutoResize} />
+
+### Resize Modes
+
+Control how users can manually resize:
+
+```tsx
+// No manual resize
+<Textarea resize="none" />
+
+// Vertical resize only (default)
+<Textarea resize="vertical" />
+
+// Horizontal resize only
+<Textarea resize="horizontal" />
+
+// Both directions
+<Textarea resize="both" />
+```
+
+<Canvas of={TextareaStories.ResizeNone} />
+
+## Examples
+
+### With Label
+
+Add a descriptive label:
+
+```tsx
+<Textarea label="Description" placeholder="Enter your description..." />
+```
+
+<Canvas of={TextareaStories.WithLabel} />
+
+### With Helper Text
+
+Provide additional context:
+
+```tsx
+<Textarea
+  label="Bio"
+  placeholder="Tell us about yourself"
+  helperText="Brief description for your profile"
+/>
+```
+
+<Canvas of={TextareaStories.WithHelperText} />
+
+### With Error
+
+Display validation errors:
+
+```tsx
+<Textarea
+  label="Message"
+  placeholder="Enter your message"
+  error="This field is required"
+/>
+```
+
+<Canvas of={TextareaStories.WithError} />
+
+### Disabled State
+
+Prevent user interaction:
+
+```tsx
+<Textarea
+  label="Disabled Textarea"
+  disabled
+  defaultValue="This content cannot be edited"
+/>
+```
+
+<Canvas of={TextareaStories.Disabled} />
+
+### Read-Only State
+
+Display content without allowing edits:
+
+```tsx
+<Textarea
+  label="Terms and Conditions"
+  readOnly
+  defaultValue="Terms content here..."
+/>
+```
+
+<Canvas of={TextareaStories.ReadOnly} />
+
+### Controlled State
+
+Manage textarea value from parent component:
+
+```tsx
+import { useState } from "react";
+
+function ControlledTextarea() {
+  const [value, setValue] = useState("");
+  const charCount = value.length;
+  const maxChars = 200;
+
+  return (
+    <Textarea
+      label="Message"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      helperText={`${charCount}/${maxChars} characters`}
+      error={charCount > maxChars ? "Character limit exceeded" : undefined}
+    />
+  );
+}
+```
+
+<Canvas of={TextareaStories.Controlled} />
+
+### With Character Count
+
+Show remaining characters:
+
+```tsx
+function CharacterCounter() {
+  const [value, setValue] = useState("");
+  const maxLength = 150;
+
+  return (
+    <div className="space-y-2">
+      <Textarea
+        label="Message"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        maxLength={maxLength}
+      />
+      <div className="text-xs text-muted-foreground text-right">
+        {value.length}/{maxLength}
+      </div>
+    </div>
+  );
+}
+```
+
+<Canvas of={TextareaStories.WithCharacterCount} />
+
+### Form Integration
+
+Use in forms with validation:
+
+<Canvas of={TextareaStories.FormExample} />
+
+### Auto-Resize Unlimited
+
+Allow unlimited growth:
+
+```tsx
+<Textarea
+  label="Notes"
+  autoResize
+  minRows={2}
+  // No maxRows - grows indefinitely
+/>
+```
+
+<Canvas of={TextareaStories.AutoResizeUnlimited} />
+
+### Comment Box
+
+Common pattern for comments:
+
+<Canvas of={TextareaStories.CommentBox} />
+
+## Best Practices
+
+### Do's
+
+- Provide clear labels for all textareas
+- Use helper text to guide users on expected input
+- Show character count for limited-length fields
+- Use auto-resize for dynamic content areas
+- Provide appropriate default rows (3-5 for most cases)
+- Show error messages below the textarea
+- Use resize="none" when fixed size is important
+- Set reasonable maxRows (8-12) for auto-resize
+
+### Don'ts
+
+- Don't use textarea for single-line input (use Input instead)
+- Don't forget to add labels in forms
+- Don't use tiny sizes (< 2 rows)
+- Don't allow unlimited growth without maxRows in constrained layouts
+- Don't hide character limits until exceeded
+- Don't use disabled when read-only is more appropriate
+- Don't forget to handle long content gracefully
+- Don't omit validation feedback
+
+## Accessibility
+
+### Keyboard Navigation
+
+The textarea is fully keyboard accessible:
+
+- **Tab** - Focus the textarea
+- **Shift + Tab** - Move focus backwards
+- **Arrow keys** - Navigate within text
+- **Home/End** - Jump to line start/end
+- **Ctrl/Cmd + A** - Select all text
+
+### Screen Readers
+
+Use proper labeling for screen readers:
+
+```tsx
+// Good - associated label
+<Textarea label="Description" id="description" />
+
+// Good - aria-label
+<Textarea aria-label="Enter your comment" />
+
+// Good - aria-labelledby
+<label id="comment-label">Comment</label>
+<Textarea aria-labelledby="comment-label" />
+```
+
+### ARIA Attributes
+
+The component automatically includes:
+
+- `aria-invalid="true"` when error is present
+- `aria-describedby` linking to helper text and errors
+- `aria-required="true"` when required prop is set
+- `aria-disabled="true"` when disabled
+
+### Error States
+
+Clear error communication:
+
+```tsx
+<Textarea
+  label="Message"
+  error="This field is required"
+  aria-invalid="true"
+  aria-describedby="message-error"
+/>
+```
+
+### Required Fields
+
+Mark required fields clearly:
+
+```tsx
+<Textarea label="Message *" required helperText="This field is required" />
+```
+
+## Common Patterns
+
+### Comment Input
+
+```tsx
+function CommentInput() {
+  const [comment, setComment] = useState("");
+
+  const handleSubmit = () => {
+    if (comment.trim()) {
+      // Submit comment
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+      <Textarea
+        placeholder="Write your comment..."
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        autoResize
+        minRows={2}
+        maxRows={6}
+      />
+      <div className="flex justify-end gap-2">
+        <Button variant="ghost" onClick={() => setComment("")}>
+          Cancel
+        </Button>
+        <Button disabled={!comment.trim()} onClick={handleSubmit}>
+          Post
+        </Button>
+      </div>
+    </div>
+  );
+}
+```
+
+### Feedback Form
+
+```tsx
+function FeedbackForm() {
+  const [feedback, setFeedback] = useState("");
+  const minLength = 20;
+  const maxLength = 500;
+
+  return (
+    <div className="space-y-2">
+      <Textarea
+        label="Your Feedback"
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+        placeholder="Tell us what you think..."
+        helperText={`${feedback.length}/${maxLength} characters (min ${minLength})`}
+        error={
+          feedback.length > 0 && feedback.length < minLength
+            ? `At least ${minLength} characters required`
+            : undefined
+        }
+        autoResize
+        minRows={4}
+        maxRows={10}
+        maxLength={maxLength}
+      />
+    </div>
+  );
+}
+```
+
+### Note Taking
+
+```tsx
+function NoteTaker() {
+  const [notes, setNotes] = useState("");
+
+  // Auto-save on change
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      saveNotes(notes);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [notes]);
+
+  return (
+    <Textarea
+      label="Notes"
+      value={notes}
+      onChange={(e) => setNotes(e.target.value)}
+      placeholder="Start typing your notes..."
+      autoResize
+      minRows={5}
+      helperText="Auto-saves as you type"
+    />
+  );
+}
+```
+
+### Message Composer
+
+```tsx
+function MessageComposer() {
+  const [message, setMessage] = useState("");
+  const maxLength = 280;
+
+  return (
+    <div className="space-y-2">
+      <Textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="What's on your mind?"
+        maxLength={maxLength}
+        autoResize
+        minRows={3}
+        maxRows={8}
+        resize="none"
+      />
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-muted-foreground">
+          {maxLength - message.length} characters remaining
+        </span>
+        <Button disabled={!message.trim()}>Send</Button>
+      </div>
+    </div>
+  );
+}
+```
+
+## Form Integration
+
+### With React Hook Form
+
+```tsx
+import { useForm } from "react-hook-form";
+
+function FormWithTextarea() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Textarea
+        label="Description"
+        error={errors.description?.message}
+        {...register("description", {
+          required: "Description is required",
+          minLength: {
+            value: 20,
+            message: "Description must be at least 20 characters",
+          },
+        })}
+      />
+    </form>
+  );
+}
+```
+
+### With Validation
+
+```tsx
+function ValidatedTextarea() {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+
+  const validate = (text: string) => {
+    if (!text.trim()) {
+      setError("This field is required");
+    } else if (text.length < 10) {
+      setError("Must be at least 10 characters");
+    } else {
+      setError("");
+    }
+  };
+
+  const handleBlur = () => {
+    validate(value);
+  };
+
+  return (
+    <Textarea
+      value={value}
+      onChange={(e) => {
+        setValue(e.target.value);
+        if (error) validate(e.target.value);
+      }}
+      onBlur={handleBlur}
+      error={error}
+    />
+  );
+}
+```
+
+## Performance Tips
+
+### Debounce Changes
+
+For expensive operations like auto-save:
+
+```tsx
+import { useDebouncedCallback } from "use-debounce";
+
+function DebouncedTextarea() {
+  const [value, setValue] = useState("");
+
+  const debouncedSave = useDebouncedCallback((text) => {
+    saveToServer(text);
+  }, 1000);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    debouncedSave(e.target.value);
+  };
+
+  return <Textarea value={value} onChange={handleChange} />;
+}
+```
+
+### Controlled vs Uncontrolled
+
+Use uncontrolled when you don't need real-time value:
+
+```tsx
+// Uncontrolled - better performance
+<Textarea defaultValue="Initial value" />
+
+// Controlled - when you need the value
+<Textarea value={value} onChange={handleChange} />
+```
+
+## Styling Customization
+
+### Custom Height
+
+```tsx
+<Textarea rows={10} className="min-h-[200px]" />
+```
+
+### Custom Width
+
+```tsx
+<Textarea className="w-full max-w-2xl" />
+```
+
+### Monospace Font
+
+For code or technical input:
+
+```tsx
+<Textarea className="font-mono" placeholder="Paste your code here..." />
+```
+
+## Related Components
+
+- [Input](/docs/components-input--docs) - For single-line text input
+- [Button](/docs/components-button--docs) - Form submission buttons

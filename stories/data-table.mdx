@@ -1,0 +1,359 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as DataTableStories from "./data-table.stories";
+
+<Meta of={DataTableStories} />
+
+# DataTable
+
+A powerful and flexible table component built on TanStack Table with support for sorting, pagination, custom styling, and loading states.
+
+<Canvas of={DataTableStories.Default} />
+
+## Usage
+
+```tsx
+import { DataTable } from "@/components/ui/data-table";
+import type { ColumnDef } from "@tanstack/react-table";
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
+
+const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+  },
+];
+
+const data: User[] = [
+  { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
+  // ... more data
+];
+
+function Example() {
+  return <DataTable columns={columns} data={data} />;
+}
+```
+
+## API
+
+<Controls />
+
+### Core Props
+
+- **columns** - Column definitions using TanStack Table's ColumnDef type
+- **data** - Array of data objects to display
+- **loading** - Shows loading state with skeleton rows
+- **pagination** - Enable/disable pagination (default: true)
+- **pageSize** - Number of rows per page (default: 10)
+- **emptyMessage** - Custom message when no data (default: "No results found")
+
+### Advanced Props
+
+- **manualSorting** - Enable server-side sorting control
+- **rowClassName** - Function to add custom classes to rows
+- **onSortingChange** - Callback when sorting changes
+- **onPaginationChange** - Callback when pagination changes
+
+## Features
+
+### Sorting
+
+Enable sorting on columns by setting `enableSorting: true` in column definition:
+
+```tsx
+const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: "name",
+    header: "Name",
+    enableSorting: true,
+  },
+];
+```
+
+<Canvas of={DataTableStories.WithSorting} />
+
+### Pagination
+
+Pagination is enabled by default. Customize page size or disable it:
+
+```tsx
+// Custom page size
+<DataTable columns={columns} data={data} pageSize={20} />
+
+// Disable pagination
+<DataTable columns={columns} data={data} pagination={false} />
+```
+
+<Canvas of={DataTableStories.CustomPageSize} />
+
+### Loading State
+
+Display loading skeleton while fetching data:
+
+```tsx
+<DataTable columns={columns} data={[]} loading />
+```
+
+<Canvas of={DataTableStories.Loading} />
+
+### Empty State
+
+Show custom message when table has no data:
+
+```tsx
+<DataTable
+  columns={columns}
+  data={[]}
+  emptyMessage="No users found. Try adjusting your filters."
+/>
+```
+
+<Canvas of={DataTableStories.CustomEmptyMessage} />
+
+## Examples
+
+### Custom Cell Rendering
+
+Customize how cells are rendered using the `cell` property:
+
+```tsx
+const columns: ColumnDef<User>[] = [
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <span
+          className={cn(
+            "inline-flex rounded-full px-2 py-1 text-xs",
+            status === "Active" && "bg-success/10 text-success",
+            status === "Inactive" && "bg-muted text-muted-foreground"
+          )}
+        >
+          {status}
+        </span>
+      );
+    },
+  },
+];
+```
+
+<Canvas of={DataTableStories.AdvancedColumns} />
+
+### Conditional Row Styling
+
+Apply custom styles to specific rows:
+
+```tsx
+<DataTable
+  columns={columns}
+  data={data}
+  rowClassName={(row) => (row.status === "Inactive" ? "opacity-60" : "")}
+/>
+```
+
+<Canvas of={DataTableStories.WithCustomStyling} />
+
+### Controlled State
+
+Control sorting and pagination externally:
+
+```tsx
+import { useState } from "react";
+import type { SortingState } from "@tanstack/react-table";
+
+function ControlledTable() {
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      onSortingChange={setSorting}
+      onPaginationChange={setPagination}
+    />
+  );
+}
+```
+
+<Canvas of={DataTableStories.Controlled} />
+
+### Server-Side Operations
+
+Implement server-side sorting and pagination:
+
+```tsx
+function ServerSideTable() {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
+  const handleSortingChange = async (sorting) => {
+    setLoading(true);
+    const newData = await fetchSortedData(sorting);
+    setData(newData);
+    setLoading(false);
+  };
+
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      loading={loading}
+      manualSorting
+      onSortingChange={handleSortingChange}
+    />
+  );
+}
+```
+
+<Canvas of={DataTableStories.SimulatedServerMode} />
+
+### Large Datasets
+
+DataTable handles large datasets efficiently with pagination:
+
+<Canvas of={DataTableStories.LargeDataset} />
+
+## Best Practices
+
+### Do's
+
+- Define column types with TypeScript for type safety
+- Use `enableSorting` selectively on sortable columns
+- Provide meaningful empty state messages
+- Show loading state during async operations
+- Use custom cell renderers for formatted data (dates, status badges, etc.)
+- Keep row actions (edit, delete) in a consistent column position
+- Use pagination for datasets larger than 50 rows
+
+### Don'ts
+
+- Don't render tables without proper loading states
+- Don't forget to memoize column definitions (use useMemo)
+- Don't make all columns sortable if not needed
+- Don't use tiny page sizes (< 10 rows) for large datasets
+- Don't omit empty states - always show helpful messages
+- Don't forget to handle error states in data fetching
+- Don't put too much content in cells - keep them scannable
+
+## Accessibility
+
+### Keyboard Navigation
+
+- Table is navigable with `Tab` key
+- Sortable column headers activated with `Enter` or `Space`
+- Focus visible with appropriate indicators
+- Pagination controls are keyboard accessible
+
+### Screen Readers
+
+The table implements proper semantic HTML:
+
+```tsx
+// Automatic ARIA attributes:
+// - role="table"
+// - role="row"
+// - role="columnheader" with aria-sort for sorted columns
+// - role="cell"
+```
+
+For custom cells with interactive elements:
+
+```tsx
+<Button aria-label="Edit user John Doe">
+  <Edit className="h-4 w-4" />
+</Button>
+```
+
+### Sort Indicators
+
+- Sort direction announced via `aria-sort` attribute
+- Visual indicators (arrows) supplement screen reader info
+- Current sort state is always visible
+
+### Loading State
+
+Loading tables:
+
+- Show skeleton loading rows to maintain layout
+- Announce loading state to screen readers
+- Maintain table structure during loading
+- Disable interactions while loading
+
+### Empty State
+
+Empty tables:
+
+- Display clear, actionable message
+- Suggest next steps when appropriate
+- Use proper contrast for visibility
+- Center content for better UX
+
+### Color and Contrast
+
+- Status badges use both color and text labels
+- Focus indicators meet WCAG contrast requirements
+- Don't rely solely on color to convey information
+- Hover and active states have sufficient contrast
+
+## Performance Tips
+
+### Memoize Columns
+
+Always memoize column definitions to prevent unnecessary re-renders:
+
+```tsx
+const columns = useMemo<ColumnDef<User>[]>(
+  () => [
+    { accessorKey: "name", header: "Name" },
+    // ... more columns
+  ],
+  []
+);
+```
+
+### Virtualization
+
+For very large datasets (1000+ rows), consider using pagination or virtual scrolling:
+
+```tsx
+// Use appropriate page size
+<DataTable columns={columns} data={largeData} pageSize={50} />
+```
+
+### Server-Side Processing
+
+For datasets with thousands of records:
+
+1. Implement server-side pagination
+2. Use `manualSorting` and handle sorting on backend
+3. Fetch only current page data
+4. Use loading states during data fetching
+
+## Related Components
+
+- [Button](/docs/components-button--docs) - For action buttons in cells
+- [Input](/docs/components-input--docs) - For search and filter functionality
+- [Select](/docs/components-select--docs) - For filter dropdowns

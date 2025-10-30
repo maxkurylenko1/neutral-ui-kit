@@ -1,0 +1,281 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as CheckboxStories from "./checkbox.stories";
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+A flexible checkbox component with support for labels, descriptions, indeterminate states, and validation errors.
+
+<Canvas of={CheckboxStories.WithLabel} />
+
+## Usage
+
+```tsx
+import { Checkbox } from "@/components/ui/checkbox";
+
+function Example() {
+  return (
+    <Checkbox
+      label="Accept terms and conditions"
+      description="Required to continue"
+    />
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Props
+
+- **label** - Optional label text displayed next to checkbox
+- **description** - Optional helper text displayed below label
+- **error** - Error message to display below checkbox
+- **checked** - Checkbox state: `true`, `false`, or `"indeterminate"`
+- **onCheckedChange** - Callback when checkbox state changes
+- **disabled** - Disable the checkbox
+- **containerClassName** - Additional classes for the wrapper container
+
+### States
+
+The checkbox supports three distinct states:
+
+- **Unchecked** - Default state (`checked={false}`)
+- **Checked** - Selected state (`checked={true}`)
+- **Indeterminate** - Neither fully checked nor unchecked (`checked="indeterminate"`)
+
+The indeterminate state is useful for "select all" scenarios where some items are selected.
+
+## Examples
+
+### Basic States
+
+All checkbox states in one view:
+
+```tsx
+<Checkbox label="Unchecked" checked={false} />
+<Checkbox label="Checked" checked={true} />
+<Checkbox label="Indeterminate" checked="indeterminate" />
+```
+
+<Canvas of={CheckboxStories.AllStates} />
+
+### With Description
+
+Provide additional context:
+
+```tsx
+<Checkbox
+  label="Marketing emails"
+  description="Receive emails about new products and features"
+/>
+```
+
+<Canvas of={CheckboxStories.WithDescription} />
+
+### With Error State
+
+Show validation errors:
+
+```tsx
+<Checkbox
+  label="I agree to the terms"
+  error="You must accept the terms and conditions"
+/>
+```
+
+<Canvas of={CheckboxStories.WithError} />
+
+### Controlled Checkbox
+
+Manage state with React:
+
+```tsx
+const [checked, setChecked] = useState(false);
+
+<Checkbox
+  label="Controlled checkbox"
+  description="Click to toggle"
+  checked={checked}
+  onCheckedChange={(value) => setChecked(value === true)}
+/>;
+```
+
+<Canvas of={CheckboxStories.Controlled} />
+
+### Indeterminate State
+
+Perfect for "select all" patterns:
+
+```tsx
+const [items, setItems] = useState([
+  { id: "1", label: "Item 1", checked: false },
+  { id: "2", label: "Item 2", checked: false },
+  { id: "3", label: "Item 3", checked: false },
+]);
+
+const allChecked = items.every((item) => item.checked);
+const someChecked = items.some((item) => item.checked);
+
+<Checkbox
+  label="Select all"
+  checked={allChecked ? true : someChecked ? "indeterminate" : false}
+/>;
+```
+
+<Canvas of={CheckboxStories.SelectAll} />
+
+### Form Integration
+
+Complete form with validation:
+
+```tsx
+const [formData, setFormData] = useState({
+  terms: false,
+  newsletter: false,
+  updates: false,
+});
+
+<Checkbox
+  label="I agree to the terms"
+  checked={formData.terms}
+  onCheckedChange={(checked) =>
+    setFormData({ ...formData, terms: checked === true })
+  }
+  error={showErrors && !formData.terms ? "Required" : undefined}
+/>;
+```
+
+<Canvas of={CheckboxStories.FormExample} />
+
+## Best Practices
+
+### Do's
+
+- Provide descriptive labels that clearly state what the checkbox controls
+- Use descriptions for important context or warnings
+- Group related checkboxes together
+- Use indeterminate state for "select all" scenarios
+- Show validation errors after user interaction
+- Keep label text concise and actionable
+- Disable checkboxes when the option is not available
+
+### Don'ts
+
+- Don't use checkboxes for mutually exclusive options (use radio buttons instead)
+- Don't make labels too long or complex
+- Don't use checkboxes without labels
+- Don't hide required information in descriptions
+- Don't show all validation errors at once
+- Don't rely solely on color to indicate state
+- Don't disable checkboxes without explanation
+
+## Accessibility
+
+### Keyboard Navigation
+
+- `Tab` - Focus the checkbox
+- `Space` - Toggle the checkbox state
+- `Shift + Tab` - Focus previous element
+- Focus visible with 2px ring indicator
+
+### Screen Readers
+
+Checkboxes are fully accessible to screen readers:
+
+```tsx
+<Checkbox label="Accept terms" description="Required to continue" />
+```
+
+The component automatically:
+
+- Associates label with checkbox via `id` and `for`
+- Links descriptions via `aria-describedby`
+- Sets `aria-invalid="true"` when errors are present
+- Announces indeterminate state
+
+### Error Announcements
+
+Errors are announced to screen readers with `role="alert"`:
+
+```tsx
+<Checkbox label="I agree" error="You must accept to continue" />
+```
+
+### Color Independence
+
+- Don't rely solely on color for state indication
+- Checkmarks are always visible regardless of color scheme
+- Error messages include text, not just color
+
+## Indeterminate State Behavior
+
+The indeterminate state is automatically cleared when the user interacts with the checkbox:
+
+```tsx
+// Cycle through states: unchecked → checked → indeterminate → unchecked
+const handleChange = () => {
+  if (checked === false) {
+    setChecked(true);
+  } else if (checked === true) {
+    setChecked("indeterminate");
+  } else {
+    setChecked(false);
+  }
+};
+```
+
+## Common Patterns
+
+### Conditional Validation
+
+```tsx
+const [agreed, setAgreed] = useState(false);
+const [showErrors, setShowErrors] = useState(false);
+
+const handleSubmit = () => {
+  if (!agreed) {
+    setShowErrors(true);
+  } else {
+    // Submit form
+  }
+};
+
+<Checkbox
+  label="I agree to the terms"
+  checked={agreed}
+  onCheckedChange={setAgreed}
+  error={showErrors && !agreed ? "Required" : undefined}
+/>;
+```
+
+### Multi-Select Group
+
+```tsx
+const [permissions, setPermissions] = useState({
+  read: false,
+  write: false,
+  delete: false,
+});
+
+{
+  Object.entries(permissions).map(([key, value]) => (
+    <Checkbox
+      key={key}
+      label={key.charAt(0).toUpperCase() + key.slice(1)}
+      checked={value}
+      onCheckedChange={(checked) =>
+        setPermissions({ ...permissions, [key]: checked })
+      }
+    />
+  ));
+}
+```
+
+## Related Components
+
+- [Switch](/docs/components-switch--docs) - For toggle settings
+- [Button](/docs/components-button--docs) - For form submission
+- [Input](/docs/components-input--docs) - For text input fields

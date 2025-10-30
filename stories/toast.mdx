@@ -1,0 +1,643 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as ToastStories from "./toast.stories";
+
+<Meta of={ToastStories} />
+
+# Toast
+
+A non-intrusive notification component for displaying temporary messages with support for multiple variants, actions, and auto-dismissal.
+
+<Canvas of={ToastStories.Default} />
+
+## Usage
+
+```tsx
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+
+// Add Toaster to your app root
+function App() {
+  return (
+    <>
+      {/* Your app content */}
+      <Toaster />
+    </>
+  );
+}
+
+// Use toast in your components
+function Example() {
+  const { toast } = useToast();
+
+  return (
+    <button
+      onClick={() =>
+        toast({
+          title: "Notification",
+          description: "Your message has been sent.",
+        })
+      }
+    >
+      Show Toast
+    </button>
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Toast Options
+
+- **title** - Toast title text
+- **description** - Toast description/body text
+- **variant** - Visual style: `default` | `success` | `destructive` | `warning`
+- **duration** - Time in milliseconds before auto-dismiss (default: 5000)
+- **action** - Custom action button/element
+- **onOpenChange** - Callback when toast opens/closes
+
+### useToast Hook
+
+The `useToast` hook returns:
+
+- **toast** - Function to show a toast
+- **dismiss** - Function to dismiss a specific toast
+- **toasts** - Array of current toasts
+
+## Variants
+
+### Default
+
+Standard notification:
+
+```tsx
+toast({
+  title: "Notification",
+  description: "Your message has been sent.",
+});
+```
+
+<Canvas of={ToastStories.Default} />
+
+### Success
+
+For successful operations:
+
+```tsx
+toast({
+  variant: "success",
+  title: "Success",
+  description: "Your changes have been saved.",
+});
+```
+
+<Canvas of={ToastStories.Success} />
+
+### Destructive (Error)
+
+For errors and failures:
+
+```tsx
+toast({
+  variant: "destructive",
+  title: "Error",
+  description: "Something went wrong. Please try again.",
+});
+```
+
+<Canvas of={ToastStories.Destructive} />
+
+### Warning
+
+For warnings and cautions:
+
+```tsx
+toast({
+  variant: "warning",
+  title: "Warning",
+  description: "Your session will expire in 5 minutes.",
+});
+```
+
+<Canvas of={ToastStories.Warning} />
+
+## Examples
+
+### With Action Button
+
+Add interactive buttons to toasts:
+
+```tsx
+toast({
+  title: "Update available",
+  description: "A new version is ready to install.",
+  action: (
+    <button
+      onClick={() => handleUpdate()}
+      className="inline-flex h-8 items-center justify-center rounded-md border bg-transparent px-3 text-sm"
+    >
+      Update
+    </button>
+  ),
+});
+```
+
+<Canvas of={ToastStories.WithAction} />
+
+### Title Only
+
+Simple one-line notifications:
+
+```tsx
+toast({
+  title: "File uploaded successfully",
+});
+```
+
+<Canvas of={ToastStories.TitleOnly} />
+
+### Description Only
+
+Simple message without title:
+
+```tsx
+toast({
+  description: "This is a simple notification message.",
+});
+```
+
+<Canvas of={ToastStories.DescriptionOnly} />
+
+### Custom Duration
+
+Control how long toasts stay visible:
+
+```tsx
+// Quick toast (2 seconds)
+toast({
+  title: "Quick Toast",
+  duration: 2000,
+});
+
+// Long toast (10 seconds)
+toast({
+  title: "Long Toast",
+  duration: 10000,
+});
+
+// Persistent (requires manual dismissal)
+toast({
+  title: "Important",
+  duration: Infinity,
+});
+```
+
+<Canvas of={ToastStories.CustomDuration} />
+
+### Multiple Toasts
+
+Show multiple toasts in sequence:
+
+```tsx
+function showMultiple() {
+  toast({ title: "First notification" });
+  setTimeout(() => toast({ title: "Second notification" }), 500);
+  setTimeout(() => toast({ title: "Third notification" }), 1000);
+}
+```
+
+<Canvas of={ToastStories.MultipleToasts} />
+
+### All Variants Together
+
+<Canvas of={ToastStories.AllVariants} />
+
+### Form Submission
+
+Common pattern for form feedback:
+
+<Canvas of={ToastStories.FormSubmission} />
+
+### With Undo Action
+
+Allow users to undo actions:
+
+```tsx
+const { dismiss } = toast({
+  title: "Item deleted",
+  description: "The item has been removed.",
+  action: (
+    <button
+      onClick={() => {
+        handleUndo();
+        dismiss();
+      }}
+    >
+      Undo
+    </button>
+  ),
+  duration: 5000,
+});
+```
+
+<Canvas of={ToastStories.WithUndo} />
+
+### Long Content
+
+Handle longer messages gracefully:
+
+<Canvas of={ToastStories.LongContent} />
+
+## Best Practices
+
+### Do's
+
+- Use appropriate variants for different message types
+- Keep messages concise and actionable
+- Provide actions for reversible operations (Undo)
+- Use success toasts for completed actions
+- Set appropriate duration based on message importance
+- Stack multiple toasts chronologically
+- Use descriptive titles and clear descriptions
+- Limit to one action per toast
+
+### Don'ts
+
+- Don't use toasts for critical errors (use modal dialogs)
+- Don't show toasts for every minor action
+- Don't use very long durations (> 10 seconds) unless necessary
+- Don't stack too many toasts at once (> 3-4)
+- Don't rely solely on color to convey meaning
+- Don't use toasts for information that requires user action
+- Don't hide important information in toasts
+- Don't forget to include the Toaster component
+
+## Accessibility
+
+### Keyboard Navigation
+
+Toasts support keyboard interaction:
+
+- **Tab** - Focus action buttons within toast
+- **Esc** - Dismiss toast (when focused)
+- **Enter/Space** - Activate focused action
+
+### Screen Readers
+
+Toasts are announced to screen readers:
+
+- Uses `role="status"` for non-critical notifications
+- Uses `role="alert"` for destructive/error toasts
+- `aria-live="polite"` for default toasts
+- `aria-live="assertive"` for errors
+- Action buttons have descriptive labels
+
+```tsx
+// Automatically accessible
+toast({
+  title: "Success",
+  description: "Operation completed",
+  variant: "success",
+});
+```
+
+### Focus Management
+
+- Toasts don't steal focus from current task
+- Action buttons can be focused via Tab
+- Focus returns to trigger after dismissal
+- Keyboard users can access actions
+
+### Color and Contrast
+
+- Variants use distinct colors AND icons
+- Text meets WCAG contrast requirements
+- Not relying solely on color coding
+- Clear visual hierarchy
+
+### Timing
+
+- Default 5-second duration allows time to read
+- Longer duration for complex messages
+- Users can dismiss manually anytime
+- Pause auto-dismiss on hover (optional)
+
+## Common Patterns
+
+### Save Confirmation
+
+```tsx
+const handleSave = async () => {
+  try {
+    await saveData();
+    toast({
+      variant: "success",
+      title: "Saved",
+      description: "Your changes have been saved successfully.",
+    });
+  } catch (error) {
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description: "Failed to save changes. Please try again.",
+    });
+  }
+};
+```
+
+### Delete with Undo
+
+```tsx
+const handleDelete = (item) => {
+  // Store for potential undo
+  const deletedItem = item;
+
+  // Optimistically remove
+  removeItem(item.id);
+
+  const { dismiss } = toast({
+    title: "Item deleted",
+    description: `${item.name} has been removed.`,
+    action: (
+      <button
+        onClick={() => {
+          restoreItem(deletedItem);
+          dismiss();
+        }}
+      >
+        Undo
+      </button>
+    ),
+    duration: 5000,
+  });
+};
+```
+
+### Upload Progress
+
+```tsx
+const handleUpload = async (file) => {
+  const toastId = toast({
+    title: "Uploading...",
+    description: `${file.name}`,
+    duration: Infinity,
+  });
+
+  try {
+    await uploadFile(file);
+    dismiss(toastId);
+    toast({
+      variant: "success",
+      title: "Upload complete",
+      description: `${file.name} uploaded successfully.`,
+    });
+  } catch (error) {
+    dismiss(toastId);
+    toast({
+      variant: "destructive",
+      title: "Upload failed",
+      description: "Please try again.",
+    });
+  }
+};
+```
+
+### Copy to Clipboard
+
+```tsx
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text);
+  toast({
+    title: "Copied to clipboard",
+    duration: 2000,
+  });
+};
+```
+
+### Session Expiry Warning
+
+```tsx
+const warnSessionExpiry = (minutesLeft) => {
+  toast({
+    variant: "warning",
+    title: "Session expiring soon",
+    description: `Your session will expire in ${minutesLeft} minutes.`,
+    action: <button onClick={extendSession}>Extend</button>,
+    duration: 10000,
+  });
+};
+```
+
+### Form Validation
+
+```tsx
+const validateForm = () => {
+  const errors = getFormErrors();
+
+  if (errors.length > 0) {
+    toast({
+      variant: "destructive",
+      title: "Validation failed",
+      description: `Please fix ${errors.length} error(s).`,
+    });
+  }
+};
+```
+
+### API Request Status
+
+```tsx
+const fetchData = async () => {
+  try {
+    const data = await api.get("/data");
+    toast({
+      variant: "success",
+      title: "Data loaded",
+    });
+  } catch (error) {
+    if (error.status === 401) {
+      toast({
+        variant: "destructive",
+        title: "Unauthorized",
+        description: "Please log in again.",
+      });
+    } else if (error.status === 500) {
+      toast({
+        variant: "destructive",
+        title: "Server error",
+        description: "Please try again later.",
+      });
+    }
+  }
+};
+```
+
+## Advanced Usage
+
+### Programmatic Dismissal
+
+```tsx
+function Example() {
+  const { toast, dismiss } = useToast();
+
+  const showToast = () => {
+    const { id } = toast({
+      title: "Processing...",
+      duration: Infinity,
+    });
+
+    // Dismiss after operation completes
+    setTimeout(() => {
+      dismiss(id);
+    }, 3000);
+  };
+
+  return <button onClick={showToast}>Start</button>;
+}
+```
+
+### Update Existing Toast
+
+```tsx
+function UpdateExample() {
+  const { toast, update } = useToast();
+
+  const startProcess = () => {
+    const { id } = toast({
+      title: "Processing...",
+      description: "Step 1 of 3",
+    });
+
+    setTimeout(() => {
+      update(id, {
+        description: "Step 2 of 3",
+      });
+    }, 1000);
+
+    setTimeout(() => {
+      update(id, {
+        variant: "success",
+        title: "Complete",
+        description: "All steps finished",
+      });
+    }, 2000);
+  };
+
+  return <button onClick={startProcess}>Start</button>;
+}
+```
+
+### Queue Management
+
+```tsx
+function QueueExample() {
+  const { toast, toasts } = useToast();
+
+  const addToQueue = () => {
+    // Limit concurrent toasts
+    if (toasts.length >= 3) {
+      return;
+    }
+
+    toast({
+      title: "New notification",
+      description: `Toast ${toasts.length + 1}`,
+    });
+  };
+
+  return <button onClick={addToQueue}>Add Toast</button>;
+}
+```
+
+## Positioning
+
+Toasts typically appear in one of these positions:
+
+- **Bottom Right** (default) - Most common, less intrusive
+- **Top Right** - More visible, good for important messages
+- **Bottom Center** - Mobile-friendly
+- **Top Center** - Very prominent
+
+Configure in Toaster component:
+
+```tsx
+<Toaster position="top-right" />
+```
+
+## Performance Tips
+
+### Avoid Toast Spam
+
+```tsx
+// Debounce rapid toasts
+const debouncedToast = debounce((message) => {
+  toast({ title: message });
+}, 500);
+```
+
+### Clean Up
+
+```tsx
+useEffect(() => {
+  return () => {
+    // Dismiss all toasts on unmount if needed
+    dismissAll();
+  };
+}, []);
+```
+
+## Common Pitfalls
+
+### Missing Toaster
+
+Always include Toaster in your app:
+
+```tsx
+// ❌ Wrong - Toaster missing
+function App() {
+  return <YourApp />;
+}
+
+// ✅ Correct
+function App() {
+  return (
+    <>
+      <YourApp />
+      <Toaster />
+    </>
+  );
+}
+```
+
+### Too Many Toasts
+
+Limit concurrent toasts:
+
+```tsx
+if (toasts.length < 3) {
+  toast({ title: "Notification" });
+}
+```
+
+### Wrong Variant
+
+Use appropriate variants:
+
+```tsx
+// ❌ Wrong
+toast({
+  variant: "success",
+  title: "Error occurred",
+});
+
+// ✅ Correct
+toast({
+  variant: "destructive",
+  title: "Error occurred",
+});
+```
+
+## Related Components
+
+- [Dialog](/docs/components-dialog--docs) - For critical messages requiring action

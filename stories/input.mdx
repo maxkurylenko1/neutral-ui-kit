@@ -1,0 +1,236 @@
+import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
+import * as InputStories from "./input.stories";
+
+<Meta of={InputStories} />
+
+# Input
+
+A flexible text input component with support for labels, validation states, helper text, and custom icons.
+
+<Canvas of={InputStories.WithLabel} />
+
+## Usage
+
+```tsx
+import { Input } from "@/components/ui/input";
+
+function Example() {
+  return (
+    <Input
+      label="Email"
+      type="email"
+      placeholder="you@example.com"
+      helperText="We'll never share your email"
+    />
+  );
+}
+```
+
+## API
+
+<Controls />
+
+### Props
+
+- **label** - Optional label text displayed above the input
+- **type** - HTML input type (text, email, password, number, tel, url)
+- **size** - Input size variant (sm, md, lg)
+- **error** - Error message to display below input
+- **helperText** - Helper text displayed below input (hidden if error is shown)
+- **leftIcon** - Icon component to display on the left side
+- **rightIcon** - Icon component to display on the right side
+- **disabled** - Disable the input field
+- **placeholder** - Placeholder text
+- **containerClassName** - Additional classes for the wrapper container
+
+### Sizes
+
+Three size options are available:
+
+- **sm** - Compact size for tight spaces (h-9, text-xs)
+- **md** - Default size for most cases (h-10, text-sm)
+- **lg** - Prominent size for emphasis (h-11, text-base)
+
+## Examples
+
+### With Icons
+
+Icons enhance visual hierarchy and provide context:
+
+```tsx
+import { Mail, Search, Lock } from "lucide-react";
+
+<Input leftIcon={<Search className="h-4 w-4" />} placeholder="Search..." />
+<Input leftIcon={<Mail className="h-4 w-4" />} label="Email" />
+<Input
+  leftIcon={<Lock className="h-4 w-4" />}
+  type="password"
+  label="Password"
+/>
+```
+
+<Canvas of={InputStories.WithLeftIcon} />
+
+### Validation States
+
+Show validation feedback to users:
+
+```tsx
+<Input
+  label="Email"
+  error="Please enter a valid email address"
+  defaultValue="invalid-email"
+/>
+```
+
+<Canvas of={InputStories.WithError} />
+
+### Password Input with Toggle
+
+Provide password visibility control:
+
+```tsx
+const [showPassword, setShowPassword] = useState(false);
+
+<Input
+  type={showPassword ? "text" : "password"}
+  label="Password"
+  placeholder="Enter your password"
+/>;
+```
+
+<Canvas of={InputStories.PasswordWithToggle} />
+
+### All Sizes
+
+```tsx
+<Input size="sm" label="Small" placeholder="Small input" />
+<Input size="md" label="Medium" placeholder="Medium input" />
+<Input size="lg" label="Large" placeholder="Large input" />
+```
+
+<Canvas of={InputStories.AllSizes} />
+
+### Form Example
+
+```tsx
+<Input
+  label="Full Name"
+  placeholder="John Doe"
+  helperText="Enter your first and last name"
+/>
+<Input
+  label="Email"
+  type="email"
+  placeholder="you@example.com"
+  leftIcon={<Mail className="h-4 w-4" />}
+/>
+<Input
+  label="Password"
+  type="password"
+  placeholder="••••••••"
+  helperText="Must be at least 8 characters"
+/>
+```
+
+<Canvas of={InputStories.FormExample} />
+
+## Best Practices
+
+### Do's
+
+- Provide clear, descriptive labels for every input
+- Use appropriate input types (email, password, number, etc.)
+- Include helper text to guide users
+- Show validation errors only after user interaction
+- Use left icon for visual hierarchy (e.g., search icon for search fields)
+- Use right icon for actions or status (e.g., clear button, validation icon)
+- Disable inputs when data is loading or action is unavailable
+
+### Don'ts
+
+- Don't use placeholder text as a label substitute
+- Don't show all validation errors at once
+- Don't make inputs too narrow for comfortable typing
+- Don't use confusing icons without clear context
+- Don't disable inputs without providing feedback
+- Don't use multiple icons on the same side
+- Don't truncate helper text or error messages
+
+## Accessibility
+
+### Keyboard Navigation
+
+- Inputs are focusable via `Tab` key
+- Type to enter text
+- `Shift + Tab` to focus previous element
+- Focus visible with 2px ring indicator
+
+### Screen Readers
+
+All inputs must have associated labels:
+
+```tsx
+<Input label="Email" type="email" placeholder="you@example.com" />
+```
+
+The component automatically creates proper `id` and `for` attributes.
+
+### Validation Announcements
+
+Error messages automatically use `role="alert"` for screen reader announcement:
+
+```tsx
+<Input label="Email" error="Please enter a valid email address" />
+```
+
+### ARIA Attributes
+
+- `aria-invalid="true"` when error is present
+- `aria-describedby` links to error or helper text
+- `aria-disabled` when input is disabled
+
+### Color and Icon Dependency
+
+- Don't rely solely on red color for errors; use error icons and text
+- Always provide text with icons; icons alone are not sufficient
+- Ensure sufficient contrast between text and background
+
+## Form Integration
+
+### With Validation
+
+```tsx
+const [email, setEmail] = useState("");
+const [errors, setErrors] = useState({});
+
+const handleSubmit = () => {
+  if (!email.includes("@")) {
+    setErrors({ email: "Invalid email address" });
+  }
+};
+
+<Input
+  label="Email"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  error={errors.email}
+  type="email"
+/>;
+```
+
+### In a Form Element
+
+```tsx
+<form onSubmit={handleSubmit}>
+  <Input label="Username" name="username" required placeholder="johndoe" />
+  <button type="submit">Submit</button>
+</form>
+```
+
+## Related Components
+
+- [Button](/docs/components-button--docs) - For submitting form data
+- [Textarea](/docs/components-textarea--docs) - For longer text input
+- [Checkbox](/docs/components-checkbox--docs) - For boolean values
+- [Select](/docs/components-select--docs) - For predefined options
