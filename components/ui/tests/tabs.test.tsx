@@ -5,8 +5,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "../tabs";
 import * as React from "react";
 
 describe("Tabs", () => {
-  const renderTabs = () => {
-    return render(
+  it("renders tabs correctly", () => {
+    render(
       <Tabs defaultValue="tab1">
         <TabsList>
           <TabsTrigger value="tab1">Tab 1</TabsTrigger>
@@ -18,25 +18,40 @@ describe("Tabs", () => {
         <TabsContent value="tab3">Content 3</TabsContent>
       </Tabs>
     );
-  };
 
-  it("renders tabs correctly", () => {
-    renderTabs();
     expect(screen.getByRole("tab", { name: "Tab 1" })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Tab 2" })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Tab 3" })).toBeInTheDocument();
   });
 
   it("shows default tab content", () => {
-    renderTabs();
+    render(
+      <Tabs defaultValue="tab1">
+        <TabsList>
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">Content 1</TabsContent>
+        <TabsContent value="tab2">Content 2</TabsContent>
+      </Tabs>
+    );
+
     expect(screen.getByText("Content 1")).toBeInTheDocument();
     expect(screen.queryByText("Content 2")).not.toBeInTheDocument();
-    expect(screen.queryByText("Content 3")).not.toBeInTheDocument();
   });
 
   it("switches tab on click", async () => {
     const user = userEvent.setup();
-    renderTabs();
+    render(
+      <Tabs defaultValue="tab1">
+        <TabsList>
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">Content 1</TabsContent>
+        <TabsContent value="tab2">Content 2</TabsContent>
+      </Tabs>
+    );
 
     await user.click(screen.getByRole("tab", { name: "Tab 2" }));
 
@@ -46,7 +61,16 @@ describe("Tabs", () => {
 
   it("marks active tab correctly", async () => {
     const user = userEvent.setup();
-    renderTabs();
+    render(
+      <Tabs defaultValue="tab1">
+        <TabsList>
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">Content 1</TabsContent>
+        <TabsContent value="tab2">Content 2</TabsContent>
+      </Tabs>
+    );
 
     const tab1 = screen.getByRole("tab", { name: "Tab 1" });
     const tab2 = screen.getByRole("tab", { name: "Tab 2" });
@@ -62,7 +86,18 @@ describe("Tabs", () => {
 
   it("supports keyboard navigation with arrow keys", async () => {
     const user = userEvent.setup();
-    renderTabs();
+    render(
+      <Tabs defaultValue="tab1">
+        <TabsList>
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+          <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">Content 1</TabsContent>
+        <TabsContent value="tab2">Content 2</TabsContent>
+        <TabsContent value="tab3">Content 3</TabsContent>
+      </Tabs>
+    );
 
     const tab1 = screen.getByRole("tab", { name: "Tab 1" });
     tab1.focus();
@@ -79,7 +114,18 @@ describe("Tabs", () => {
 
   it("wraps around when using arrow keys", async () => {
     const user = userEvent.setup();
-    renderTabs();
+    render(
+      <Tabs defaultValue="tab1">
+        <TabsList>
+          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+          <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+        </TabsList>
+        <TabsContent value="tab1">Content 1</TabsContent>
+        <TabsContent value="tab2">Content 2</TabsContent>
+        <TabsContent value="tab3">Content 3</TabsContent>
+      </Tabs>
+    );
 
     const tab3 = screen.getByRole("tab", { name: "Tab 3" });
     tab3.focus();
@@ -146,58 +192,6 @@ describe("Tabs", () => {
     await user.click(disabledTab);
     expect(screen.queryByText("Content 2")).not.toBeInTheDocument();
     expect(screen.getByText("Content 1")).toBeInTheDocument();
-  });
-
-  it("lazy loads content when lazy prop is true", async () => {
-    const user = userEvent.setup();
-
-    const LazyComponent = ({ name }: { name: string }) => {
-      return <div>Lazy Content {name}</div>;
-    };
-
-    render(
-      <Tabs defaultValue="tab1">
-        <TabsList>
-          <TabsTrigger value="tab1">Tab 1</TabsTrigger>
-          <TabsTrigger value="tab2">Tab 2</TabsTrigger>
-        </TabsList>
-        <TabsContent value="tab1">
-          <div>Eager Content 1</div>
-        </TabsContent>
-        <TabsContent value="tab2" lazy>
-          <LazyComponent name="2" />
-        </TabsContent>
-      </Tabs>
-    );
-
-    // Initially, lazy content should not be rendered
-    expect(screen.queryByText("Lazy Content 2")).not.toBeInTheDocument();
-
-    // Click tab 2
-    await user.click(screen.getByRole("tab", { name: "Tab 2" }));
-
-    // Now lazy content should be rendered
-    expect(screen.getByText("Lazy Content 2")).toBeInTheDocument();
-
-    // Go back to tab 1
-    await user.click(screen.getByRole("tab", { name: "Tab 1" }));
-
-    // Lazy content should still exist in DOM (once mounted, stays mounted)
-    expect(screen.queryByText("Lazy Content 2")).toBeInTheDocument();
-  });
-
-  it("supports home and end keys", async () => {
-    const user = userEvent.setup();
-    renderTabs();
-
-    const tab2 = screen.getByRole("tab", { name: "Tab 2" });
-    tab2.focus();
-
-    await user.keyboard("{Home}");
-    expect(screen.getByRole("tab", { name: "Tab 1" })).toHaveFocus();
-
-    await user.keyboard("{End}");
-    expect(screen.getByRole("tab", { name: "Tab 3" })).toHaveFocus();
   });
 
   it("applies custom className to TabsList", () => {

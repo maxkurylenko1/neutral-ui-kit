@@ -3,9 +3,7 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import { cn } from "@/lib/utils";
 
 const TooltipProvider = TooltipPrimitive.Provider;
-
 const TooltipRoot = TooltipPrimitive.Root;
-
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
 const TooltipContent = React.forwardRef<
@@ -28,12 +26,11 @@ export interface TooltipProps {
   children: React.ReactNode;
   content: React.ReactNode;
   side?: "top" | "right" | "bottom" | "left";
-  delayDuration?: number;
-  skipDelayDuration?: number;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   contentClassName?: string;
+  delayDuration?: number;
 }
 
 const Tooltip = React.forwardRef<HTMLButtonElement, TooltipProps>(
@@ -42,33 +39,28 @@ const Tooltip = React.forwardRef<HTMLButtonElement, TooltipProps>(
       children,
       content,
       side = "top",
-      delayDuration = 200,
-      skipDelayDuration = 300,
       open,
       defaultOpen,
       onOpenChange,
       contentClassName,
+      delayDuration = 0,
     },
     ref
   ) => {
     return (
-      <TooltipProvider
+      <TooltipRoot
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={onOpenChange}
         delayDuration={delayDuration}
-        skipDelayDuration={skipDelayDuration}
       >
-        <TooltipRoot
-          open={open}
-          defaultOpen={defaultOpen}
-          onOpenChange={onOpenChange}
-        >
-          <TooltipTrigger ref={ref} asChild>
-            {children}
-          </TooltipTrigger>
-          <TooltipContent side={side} className={contentClassName}>
-            {content}
-          </TooltipContent>
-        </TooltipRoot>
-      </TooltipProvider>
+        <TooltipTrigger ref={ref} asChild>
+          {children}
+        </TooltipTrigger>
+        <TooltipContent side={side} className={contentClassName}>
+          {content}
+        </TooltipContent>
+      </TooltipRoot>
     );
   }
 );

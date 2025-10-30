@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../styles/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Neutral UI Kit",
@@ -17,7 +18,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider defaultTheme="light" storageKey="neutral-ui-theme">
-          {children}
+          <TooltipProvider delayDuration={200} skipDelayDuration={300}>
+            {children}
+          </TooltipProvider>
           <Toaster />
         </ThemeProvider>
       </body>

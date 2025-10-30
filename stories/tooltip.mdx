@@ -1,5 +1,6 @@
 import { Meta, Canvas, Controls, Story } from "@storybook/blocks";
 import * as TooltipStories from "./tooltip.stories";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 <Meta of={TooltipStories} />
 
@@ -20,6 +21,23 @@ function Example() {
     <Tooltip content="This is a tooltip">
       <Button>Hover me</Button>
     </Tooltip>
+  );
+}
+```
+
+### Global Setup (Recommended)
+
+Wrap your entire app with `TooltipProvider` in your root component:
+
+```tsx
+import { TooltipProvider } from "@/components/ui/tooltip";
+import YourApp from "./App";
+
+export default function Root() {
+  return (
+    <TooltipProvider>
+      <YourApp />
+    </TooltipProvider>
   );
 }
 ```

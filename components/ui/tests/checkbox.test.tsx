@@ -153,9 +153,15 @@ describe("Checkbox", () => {
   });
 
   it("applies container className when label is present", () => {
-    render(<Checkbox label="Test" containerClassName="custom-container" />);
-    const container = screen.getByText("Test").closest("div")?.parentElement;
-    expect(container).toHaveClass("custom-container");
+    const { container } = render(
+      <Checkbox label="Test" containerClassName="custom-container" />
+    );
+    // Find the outer flex container that wraps everything
+    const outerContainer = container.querySelector(".custom-container");
+    expect(outerContainer).toBeInTheDocument();
+    expect(outerContainer).toHaveClass("flex");
+    expect(outerContainer).toHaveClass("flex-col");
+    expect(outerContainer).toHaveClass("gap-2");
   });
 
   it("uses custom id when provided", () => {

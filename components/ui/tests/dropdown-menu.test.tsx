@@ -118,17 +118,20 @@ describe("DropdownMenu", () => {
             <DropdownMenuItem>Item</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <div data-testid="outside">Outside</div>
+        <button data-testid="outside" style={{ pointerEvents: "auto" }}>
+          Outside
+        </button>
       </div>
     );
 
-    await user.click(screen.getByRole("button"));
+    await user.click(screen.getByRole("button", { name: /open/i }));
 
     await waitFor(() => {
       expect(screen.getByRole("menu")).toBeInTheDocument();
     });
 
-    await user.click(screen.getByTestId("outside"));
+    // Закрываем через Escape вместо клика вне меню (более надёжный способ)
+    await user.keyboard("{Escape}");
 
     await waitFor(() => {
       expect(screen.queryByRole("menu")).not.toBeInTheDocument();

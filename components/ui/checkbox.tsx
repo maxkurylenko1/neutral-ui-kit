@@ -42,8 +42,7 @@ const Checkbox = React.forwardRef<
 
     const describedBy = [descriptionId, errorId].filter(Boolean).join(" ");
 
-    // Wrap the checkbox in a container if we have label or description
-    if (label || description) {
+    if (label || description || error) {
       return (
         <div className={cn("flex flex-col gap-2", containerClassName)}>
           <div className="flex items-start gap-3">
@@ -72,16 +71,18 @@ const Checkbox = React.forwardRef<
             </CheckboxPrimitive.Root>
 
             <div className="flex flex-col gap-1">
-              <label
-                htmlFor={checkboxId}
-                className={cn(
-                  "text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-                  !disabled && "cursor-pointer",
-                  hasError && "text-destructive"
-                )}
-              >
-                {label}
-              </label>
+              {label && (
+                <label
+                  htmlFor={checkboxId}
+                  className={cn(
+                    "text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+                    !disabled && "cursor-pointer",
+                    hasError && "text-destructive"
+                  )}
+                >
+                  {label}
+                </label>
+              )}
 
               {description && (
                 <p
@@ -110,7 +111,6 @@ const Checkbox = React.forwardRef<
       );
     }
 
-    // Standalone checkbox without label
     return (
       <CheckboxPrimitive.Root
         ref={ref}
