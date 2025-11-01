@@ -14,7 +14,14 @@
     "test:ui": "vitest --ui",
     "test:run": "vitest run",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test:visual": "playwright test",
+    "test:visual:ui": "playwright test --ui",
+    "test:visual:debug": "playwright test --debug",
+    "test:visual:headed": "playwright test --headed",
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:visual:report": "playwright show-report",
+    "test:visual:codegen": "playwright codegen http://localhost:6006"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.1",
@@ -36,6 +43,8 @@
     "tailwind-merge": "^2.2.0"
   },
   "devDependencies": {
+    "@playwright/experimental-ct-react": "^1.56.1",
+    "@playwright/test": "^1.56.1",
     "@storybook/addon-essentials": "8.4.7",
     "@storybook/addon-interactions": "8.4.7",
     "@storybook/addon-postcss": "^2.0.0",
