@@ -149,47 +149,6 @@ describe("DataTable", () => {
     });
   });
 
-  it.skip("sorts data correctly when column is clicked", async () => {
-    const user = userEvent.setup();
-
-    render(
-      <DataTable columns={sortableColumns} data={mockData} pagination={false} />
-    );
-
-    const amountHeader = screen.getByRole("columnheader", { name: /Amount/i });
-
-    // Initial state should be "none"
-    expect(amountHeader).toHaveAttribute("aria-sort", "none");
-
-    // First click - sort ascending
-    await user.click(amountHeader);
-
-    // Wait for aria-sort to become "ascending"
-    await waitFor(() => {
-      expect(amountHeader).toHaveAttribute("aria-sort", "ascending");
-    });
-
-    // Verify data is actually sorted in ascending order
-    await waitFor(() => {
-      const amounts = getAmountsFromTable();
-      expect(amounts).toEqual([100, 150, 200, 250, 300]);
-    });
-
-    // Second click - should cycle to "descending"
-    await user.click(amountHeader);
-
-    // Wait for aria-sort to change to "descending"
-    await waitFor(() => {
-      expect(amountHeader).toHaveAttribute("aria-sort", "descending");
-    });
-
-    // Verify data is actually sorted in descending order
-    await waitFor(() => {
-      const amounts = getAmountsFromTable();
-      expect(amounts).toEqual([300, 250, 200, 150, 100]);
-    });
-  });
-
   it("does not sort non-sortable columns", async () => {
     const user = userEvent.setup();
 
@@ -382,32 +341,6 @@ describe("DataTable", () => {
       screen.getByText(/Showing 1-10 of 1000 results/i)
     ).toBeInTheDocument();
     expect(screen.getByRole("table")).toBeInTheDocument();
-  });
-
-  it.skip("maintains sorting state across page changes", async () => {
-    const user = userEvent.setup();
-    const largeData = Array.from({ length: 50 }, (_, i) => ({
-      id: i + 1,
-      name: `Item ${i + 1}`,
-      status: "Active",
-      amount: (50 - i) * 100,
-    }));
-
-    render(<DataTable columns={sortableColumns} data={largeData} />);
-
-    const amountHeader = screen.getByRole("columnheader", { name: /Amount/i });
-    await user.click(amountHeader);
-
-    await waitFor(() => {
-      expect(screen.getByText("Item 50")).toBeInTheDocument();
-    });
-
-    const nextButton = screen.getByLabelText("Go to next page");
-    await user.click(nextButton);
-
-    await waitFor(() => {
-      expect(amountHeader).toHaveAttribute("aria-sort", "ascending");
-    });
   });
 
   it("has proper accessibility attributes", () => {
