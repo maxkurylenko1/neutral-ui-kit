@@ -36,7 +36,7 @@ interface StoryComponent {
 
 export const decorators = [
   (Story: StoryComponent) => (
-    <ThemeProvider defaultTheme="light" storageKey="ui-kit-theme">
+    <ThemeProvider defaultTheme="light">
       <TooltipProvider>
         <Story />
       </TooltipProvider>

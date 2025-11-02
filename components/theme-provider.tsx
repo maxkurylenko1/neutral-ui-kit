@@ -7,7 +7,6 @@ type Theme = "light" | "dark";
 type ThemeProviderProps = {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  storageKey?: string;
 };
 
 type ThemeProviderState = {
@@ -22,7 +21,6 @@ const ThemeProviderContext = React.createContext<
 export function ThemeProvider({
   children,
   defaultTheme = "light",
-  storageKey = "ui-theme",
   ...props
 }: ThemeProviderProps) {
   const [theme, setTheme] = React.useState<Theme>(defaultTheme);
