@@ -86,7 +86,6 @@ describe("Select", () => {
       expect(onOpenChange).toHaveBeenCalledWith(true);
     });
 
-    // Check that options are rendered
     await waitFor(() => {
       expect(screen.getByText("Option 1")).toBeInTheDocument();
       expect(screen.getByText("Option 2")).toBeInTheDocument();
@@ -183,9 +182,7 @@ describe("Select", () => {
       expect(screen.getByText("Option 1")).toBeInTheDocument();
     });
 
-    // Arrow down to next option
     await user.keyboard("{ArrowDown}");
-    // Enter to select
     await user.keyboard("{Enter}");
 
     await waitFor(() => {
@@ -427,7 +424,6 @@ describe("Select", () => {
     const user = userEvent.setup();
     const trigger = screen.getByTestId("select-trigger");
 
-    // Select a value first to trigger form input creation
     await user.click(trigger);
 
     await waitFor(() => {
@@ -441,9 +437,7 @@ describe("Select", () => {
       expect(onValueChange).toHaveBeenCalledWith("option1");
     });
 
-    // Radix UI Select creates a hidden input with the name after value is selected
     const hiddenInput = document.querySelector('input[name="test-select"]');
-    // If hidden input exists, it should have the correct value
     if (hiddenInput) {
       expect(hiddenInput).toHaveAttribute("value", "option1");
     }
@@ -502,37 +496,31 @@ describe("Select", () => {
 
     const trigger = screen.getByTestId("select-trigger");
 
-    // Open and select
     await user.click(trigger);
 
     await waitFor(() => {
       expect(screen.getByRole("listbox")).toBeInTheDocument();
     });
 
-    // Use getByRole to find the option in the listbox
     const option2 = screen.getByRole("option", { name: "Option 2" });
     await user.click(option2);
 
-    // Verify selection
     await waitFor(() => {
       expect(onValueChange).toHaveBeenCalledWith("option2");
       expect(trigger).toHaveTextContent("Option 2");
     });
 
-    // Open again
     await user.click(trigger);
 
     await waitFor(() => {
       expect(screen.getByRole("listbox")).toBeInTheDocument();
     });
 
-    // Find the option again using role
     const option2Again = screen.getByRole("option", { name: "Option 2" });
     const optionContainer = option2Again.closest(
       "[data-radix-collection-item]"
     );
 
-    // Radix UI adds data-state="checked" to selected items
     expect(optionContainer).toHaveAttribute("data-state", "checked");
   });
 });

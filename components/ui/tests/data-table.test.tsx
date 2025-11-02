@@ -91,7 +91,7 @@ describe("DataTable", () => {
     render(<DataTable columns={columns} data={mockData} />);
 
     const rows = screen.getAllByRole("row");
-    expect(rows).toHaveLength(6); // 1 header + 5 data rows
+    expect(rows).toHaveLength(6);
   });
 
   it("shows loading state", () => {

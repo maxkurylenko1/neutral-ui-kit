@@ -130,7 +130,6 @@ describe("DropdownMenu", () => {
       expect(screen.getByRole("menu")).toBeInTheDocument();
     });
 
-    // Закрываем через Escape вместо клика вне меню (более надёжный способ)
     await user.keyboard("{Escape}");
 
     await waitFor(() => {

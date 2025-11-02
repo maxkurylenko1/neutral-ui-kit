@@ -108,12 +108,9 @@ describe("Dialog", () => {
     await user.click(screen.getByText("Open"));
     await waitFor(() => expect(screen.getByRole("dialog")).toBeInTheDocument());
 
-    // Radix UI по умолчанию поддерживает закрытие диалога при клике вне контента
-    // Проверяем что диалог имеет правильные атрибуты для поддержки этого
     const dialog = screen.getByRole("dialog");
     expect(dialog).toBeInTheDocument();
 
-    // Закрываем через ESC (гарантированно работает)
     await user.keyboard("{Escape}");
 
     await waitFor(() =>
@@ -300,7 +297,6 @@ describe("Dialog", () => {
 
     const dialog = screen.getByRole("dialog");
 
-    // После открытия диалога фокус должен быть внутри
     await waitFor(() => {
       const focusedElement = document.activeElement;
       expect(dialog.contains(focusedElement)).toBeTruthy();

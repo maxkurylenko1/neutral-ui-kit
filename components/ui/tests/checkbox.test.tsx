@@ -156,7 +156,6 @@ describe("Checkbox", () => {
     const { container } = render(
       <Checkbox label="Test" containerClassName="custom-container" />
     );
-    // Find the outer flex container that wraps everything
     const outerContainer = container.querySelector(".custom-container");
     expect(outerContainer).toBeInTheDocument();
     expect(outerContainer).toHaveClass("flex");
@@ -190,5 +189,4 @@ describe("Checkbox", () => {
   });
 });
 
-// Need to import React for the controlled test
 import * as React from "react";

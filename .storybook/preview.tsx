@@ -1,4 +1,3 @@
-// .storybook/preview.ts
 import "../styles/globals.css";
 import React from "react";
 import { TooltipProvider } from "../components/ui/tooltip";

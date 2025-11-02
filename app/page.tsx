@@ -1,10 +1,8 @@
-// app/page.tsx
 import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* top bar */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-border">
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
@@ -34,7 +32,6 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* hero */}
       <main className="mx-auto flex max-w-5xl flex-col gap-10 px-6 py-12 lg:py-16">
         <div className="max-w-2xl space-y-4">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">

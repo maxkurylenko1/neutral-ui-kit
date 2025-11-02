@@ -35,7 +35,6 @@ const Switch = React.forwardRef<
 
     const describedBy = [descriptionId, errorId].filter(Boolean).join(" ");
 
-    // Wrap the switch in a container if we have label or description
     if (label || description) {
       return (
         <div className={cn("flex flex-col gap-1.5", containerClassName)}>
@@ -95,7 +94,6 @@ const Switch = React.forwardRef<
       );
     }
 
-    // Standalone switch without label
     return (
       <SwitchPrimitive.Root
         ref={ref}
