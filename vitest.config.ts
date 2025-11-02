@@ -1,10 +1,22 @@
-import { defineConfig, mergeConfig } from "vitest/config";
-import { defineConfig as defineViteConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-const viteConfig = defineViteConfig({
-  plugins: [react()],
+export default defineConfig({
+  plugins: [react() as any],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./tests/setup.ts",
+    exclude: [
+      "tests/visual/**",
+      "playwright-report/**",
+      "test-results/**",
+      "node_modules/**",
+      ".next/**",
+      "dist/**",
+    ],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./"),
@@ -14,22 +26,3 @@ const viteConfig = defineViteConfig({
     },
   },
 });
-
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    test: {
-      environment: "jsdom",
-      globals: true,
-      setupFiles: "./tests/setup.ts",
-      exclude: [
-        "tests/visual/**",
-        "playwright-report/**",
-        "tests-results/**",
-        "node_modules/**",
-        ".next/**",
-        "dist/**",
-      ],
-    },
-  })
-);
