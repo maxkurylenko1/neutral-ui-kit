@@ -22,7 +22,7 @@ jobs:
 
       - name: Install deps
         run: |
-          npm ci
+          npm install
           npm install --save-dev @eslint/eslintrc
 
       - name: Typecheck
