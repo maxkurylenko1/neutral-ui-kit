@@ -245,7 +245,6 @@ function Block({
 export default function KitchenSinkPage() {
   const [page, setPage] = React.useState(1);
   const { theme, setTheme } = useTheme();
-
   const PAGE_SIZE = 6;
   const total = USERS.length;
 
@@ -275,6 +274,8 @@ export default function KitchenSinkPage() {
           <div className="flex gap-2 flex-col items-center">
             <Switch
               id="dark-mode"
+              defaultChecked={theme === "dark"}
+              checked={theme === "dark"}
               onClick={() => {
                 setTheme(theme === "dark" ? "light" : "dark");
               }}
@@ -332,7 +333,7 @@ export default function KitchenSinkPage() {
               </span>
             </label>
             <div className="flex items-center gap-2">
-              <Switch id="dark-mode" />
+              <Switch id="dark-mode" checked={theme === "dark"} />
               <span className="text-sm leading-none">Dark mode</span>
             </div>
           </Block>
