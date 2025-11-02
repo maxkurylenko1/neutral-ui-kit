@@ -21,7 +21,9 @@ jobs:
           cache: "npm"
 
       - name: Install deps
-        run: npm ci
+        run: |
+          npm ci
+          npm install --save-dev @eslint/eslintrc
 
       - name: Typecheck
         run: npm run typecheck --if-present

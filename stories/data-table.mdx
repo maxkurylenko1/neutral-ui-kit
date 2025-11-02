@@ -43,7 +43,6 @@ const columns: ColumnDef<User>[] = [
 
 const data: User[] = [
   { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
-  // ... more data
 ];
 
 function Example() {
@@ -94,10 +93,8 @@ const columns: ColumnDef<User>[] = [
 Pagination is enabled by default. Customize page size or disable it:
 
 ```tsx
-// Custom page size
 <DataTable columns={columns} data={data} pageSize={20} />
 
-// Disable pagination
 <DataTable columns={columns} data={data} pagination={false} />
 ```
 
