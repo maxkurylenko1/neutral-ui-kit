@@ -1,6 +1,14 @@
 {
   "name": "neutral-ui-kit",
   "version": "0.1.0",
+  "homepage": "https://maxkurylenko1.github.io/neutral-ui-kit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxkurylenko1/neutral-ui-kit"
+  },
+  "bugs": {
+    "url": "https://github.com/maxkurylenko1/neutral-ui-kit/issues"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",

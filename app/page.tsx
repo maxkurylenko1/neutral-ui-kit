@@ -17,13 +17,13 @@ export default function Home() {
             Open demo
           </Link>
           <Link
-            href="http://localhost:6006"
+            href="https://maxkurylenko1.github.io/neutral-ui-kit"
             className="hidden sm:inline-flex rounded-md border px-4 py-2 text-sm hover:bg-muted/60 transition"
           >
             Storybook
           </Link>
           <Link
-            href="https://github.com/maxkurylenko1"
+            href="https://github.com/maxkurylenko1/neutral-ui-kit"
             className="hidden sm:inline-flex text-sm text-muted-foreground hover:text-foreground transition"
             target="_blank"
           >
