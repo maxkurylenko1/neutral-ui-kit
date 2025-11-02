@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider defaultTheme="light" storageKey="neutral-ui-theme">
+        <ThemeProvider defaultTheme="light">
           <TooltipProvider delayDuration={200} skipDelayDuration={300}>
             {children}
           </TooltipProvider>
