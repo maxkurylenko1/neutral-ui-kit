@@ -26,11 +26,12 @@ jobs:
           version: 8
 
       - name: Install deps
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Run Playwright tests
         run: pnpm exec playwright test
 
+      # 1. всегда забираем html отчёт
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -38,6 +39,7 @@ jobs:
           name: playwright-report
           path: playwright-report
 
+      # 2. если что-то упало — забираем actual/diff из test-results
       - name: Upload failed screenshots
         if: failure()
         uses: actions/upload-artifact@v4
@@ -45,6 +47,7 @@ jobs:
           name: visual-failures
           path: test-results/**
 
+      # 3. (не обязательно) забираем сами baseline'ы из репо
       - name: Upload baselines
         if: always()
         uses: actions/upload-artifact@v4
