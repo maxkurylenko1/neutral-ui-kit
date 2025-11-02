@@ -27,7 +27,8 @@ const Switch = React.forwardRef<
     },
     ref
   ) => {
-    const switchId = id || React.useId();
+    const generatedId = React.useId();
+    const switchId = id ?? generatedId;
     const descriptionId = description ? `${switchId}-description` : undefined;
     const errorId = error ? `${switchId}-error` : undefined;
     const hasError = !!error;

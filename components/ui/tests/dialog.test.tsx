@@ -298,7 +298,6 @@ describe("Dialog", () => {
     await user.click(screen.getByText("Open"));
     await waitFor(() => expect(screen.getByRole("dialog")).toBeInTheDocument());
 
-    const firstInput = screen.getByPlaceholderText("First input");
     const dialog = screen.getByRole("dialog");
 
     // После открытия диалога фокус должен быть внутри

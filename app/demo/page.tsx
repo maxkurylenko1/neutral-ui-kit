@@ -1,4 +1,3 @@
-// app/kitchen-sink/page.tsx
 "use client";
 
 import * as React from "react";
@@ -33,20 +32,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "@/components/ui/use-toast";
 
-// your data-table component
 import { DataTable } from "@/components/ui/data-table";
 import { useTheme } from "@/components/theme-provider";
 
-// ------------------------------------------------
-// DEMO DATA
-// ------------------------------------------------
 type DemoUser = {
   id: string;
   name: string;
@@ -229,7 +220,6 @@ const USER_COLUMNS: any[] = [
   },
 ];
 
-// reusable card
 function Block({
   title,
   description,
@@ -270,7 +260,6 @@ export default function KitchenSinkPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground px-4 py-6 md:px-8 md:py-10 space-y-8">
-      {/* HEADER */}
       <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
           <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
@@ -308,7 +297,6 @@ export default function KitchenSinkPage() {
         </div>
       </header>
 
-      {/* FOUNDATION */}
       <section className="space-y-4">
         <h2 className="text-sm font-medium text-muted-foreground tracking-wide">
           FOUNDATION
@@ -351,7 +339,6 @@ export default function KitchenSinkPage() {
         </div>
       </section>
 
-      {/* NAVIGATION & FORMS */}
       <section className="space-y-4">
         <h2 className="text-sm font-medium text-muted-foreground tracking-wide">
           NAVIGATION & FORMS
@@ -393,7 +380,6 @@ export default function KitchenSinkPage() {
         </div>
       </section>
 
-      {/* DATA & FEEDBACK — table + pagination */}
       <section className="space-y-4">
         <h2 className="text-sm font-medium text-muted-foreground tracking-wide">
           DATA & FEEDBACK
@@ -430,7 +416,6 @@ export default function KitchenSinkPage() {
         </div>
       </section>
 
-      {/* OVERLAYS & MENUS */}
       <section className="space-y-4 pb-4">
         <h2 className="text-sm font-medium text-muted-foreground tracking-wide">
           OVERLAYS & MENUS
@@ -487,7 +472,6 @@ export default function KitchenSinkPage() {
             title="Tooltip"
             description="Micro-explanations for icons and rare actions."
           >
-            {/* твой исходный вариант оставляем */}
             <Tooltip content="This action will open the details.">
               <TooltipTrigger asChild>
                 <span>
@@ -502,13 +486,11 @@ export default function KitchenSinkPage() {
         </div>
       </section>
 
-      {/* COMPOSED EXAMPLES */}
       <section className="space-y-4 pb-10">
         <h2 className="text-sm font-medium text-muted-foreground tracking-wide">
           COMPOSED EXAMPLES
         </h2>
         <div className="grid gap-4 xl:grid-cols-3">
-          {/* 1. User settings form */}
           <Block
             title="User settings form"
             description="Real-world form built from base inputs."
@@ -549,7 +531,6 @@ export default function KitchenSinkPage() {
             </div>
           </Block>
 
-          {/* 2. Toast playground */}
           <Block
             title="Toast playground"
             description="Trigger different toast configurations."
@@ -597,7 +578,6 @@ export default function KitchenSinkPage() {
             </p>
           </Block>
 
-          {/* 3. Action panel */}
           <Block
             title="Action panel"
             description="Combine dropdown and dialog for typical admin actions."

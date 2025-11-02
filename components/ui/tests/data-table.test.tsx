@@ -61,15 +61,6 @@ const sortableColumns: ColumnDef<TestData>[] = [
   },
 ];
 
-// Helper to extract amounts from current table state
-const getAmountsFromTable = () => {
-  const rows = screen.getAllByRole("row").slice(1); // Skip header
-  return rows.map((row) => {
-    const cells = row.querySelectorAll('[role="cell"]');
-    return parseInt(cells[3]?.textContent || "0", 10);
-  });
-};
-
 describe("DataTable", () => {
   it("renders table with data", () => {
     render(<DataTable columns={columns} data={mockData} />);

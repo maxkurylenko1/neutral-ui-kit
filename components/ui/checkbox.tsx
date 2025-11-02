@@ -35,7 +35,8 @@ const Checkbox = React.forwardRef<
     },
     ref
   ) => {
-    const checkboxId = id || React.useId();
+    const generatedId = React.useId();
+    const checkboxId = id ?? generatedId;
     const descriptionId = description ? `${checkboxId}-description` : undefined;
     const errorId = error ? `${checkboxId}-error` : undefined;
     const hasError = !!error;
