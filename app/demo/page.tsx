@@ -333,8 +333,8 @@ export default function KitchenSinkPage() {
               </span>
             </label>
             <div className="flex items-center gap-2">
-              <Switch id="dark-mode" checked={theme === "dark"} />
-              <span className="text-sm leading-none">Dark mode</span>
+              <Switch id="switch" />
+              <span className="text-sm leading-none">Toggle switch</span>
             </div>
           </Block>
         </div>
