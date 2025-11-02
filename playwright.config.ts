@@ -14,18 +14,13 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: "http://localhost:6006",
+    baseURL: "http://127.0.0.1:6006",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
     trace: "on-first-retry",
 
     actionTimeout: 15000,
     navigationTimeout: 30000,
-  },
-  expect: {
-    toHaveScreenshot: {
-      maxDiffPixelRatio: 0.02,
-    },
   },
   projects: [
     {
