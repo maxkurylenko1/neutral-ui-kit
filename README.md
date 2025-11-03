@@ -11,8 +11,8 @@
 
 The repository already includes:
 
-- a running demo application (Next.js) – https://neutral-ui-kit.vercel.app
-- a documented component catalog (Storybook) – https://maxkurylenko1.github.io/neutral-ui-kit
+- A running demo application (Next.js) – https://neutral-ui-kit.vercel.app
+- A documented component catalog (Storybook) – https://maxkurylenko1.github.io/neutral-ui-kit
 - CI/CD pipelines (GitHub Actions) for linting, unit tests, visual tests, and Storybook deploy
 
 ---
