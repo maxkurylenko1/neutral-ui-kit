@@ -1,5 +1,11 @@
 # Neutral UI Kit
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.3-61dafb.svg)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8.svg)](https://tailwindcss.com/)
+[![Storybook](https://img.shields.io/badge/Storybook-8.4-ff4785.svg)](https://storybook.js.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 > A production-ready React component library built with accessibility, performance, and developer experience in mind.
 
 The repository already includes:
