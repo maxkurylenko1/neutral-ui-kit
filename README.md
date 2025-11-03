@@ -2,33 +2,63 @@
 
 > A production-ready React component library built with accessibility, performance, and developer experience in mind.
 
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-18.3-61dafb.svg)](https://reactjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8.svg)](https://tailwindcss.com/)
-[![Storybook](https://img.shields.io/badge/Storybook-8.4-ff4785.svg)](https://storybook.js.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+The repository already includes:
 
-## ✨ Features
+- a running demo application (Next.js) – https://neutral-ui-kit.vercel.app
+- a documented component catalog (Storybook) – https://maxkurylenko1.github.io/neutral-ui-kit
+- CI/CD pipelines (GitHub Actions) for linting, unit tests, visual tests, and Storybook deploy
 
-- 🎨 **Design System** - HSL-based theming with automatic dark mode
-- ♿ **Accessibility First** - WCAG 2.1 compliant with proper ARIA attributes
-- 🔧 **Type-Safe** - Full TypeScript support with strict mode
-- 📦 **Tree-Shakeable** - Import only what you need
-- 🧪 **Well Tested** - 50%+ test coverage with Vitest + RTL
-- 📖 **Documented** - Comprehensive Storybook documentation
-- 🎭 **Composable** - Built on Radix UI primitives
-- 🚀 **Performance** - Optimized bundle size and runtime
+---
 
-## 🎯 Tech Stack
+## Live
 
+- **Next.js demo**: https://neutral-ui-kit.vercel.app
+- **Storybook**: https://maxkurylenko1.github.io/neutral-ui-kit
+- **Source**: https://github.com/maxkurylenko1/neutral-ui-kit
+
+The demo page (`/demo`) shows components in realistic layout blocks (foundation, forms, data, overlays), so reviewers can quickly understand the scope.
+
+---
+
+## ✨ Highlights
+
+- **Component-first**: buttons, inputs, textarea, select, checkbox, switch, tabs, dropdown menu, dialog, tooltip (wrapped to avoid Radix single-child errors), toast/toaster.
+- **Data view**: table on top of **@tanstack/react-table** with sorting, pagination, empty state and stable width between pages.
+- **Theme support**: light/dark via a shared theme provider and Tailwind-based tokens.
+- **Two entry points**: Next.js app (integration example) and Storybook (component-level documentation).
+- **Automated quality**: Vitest for unit tests, Playwright for visual regression, ESLint + Prettier.
+- **CI/CD ready**: workflows already run on push/PR, install Playwright browsers, build Storybook, and can publish releases.
+
+---
+
+## 🎯 Tech stack
+
+- **Framework:** Next.js 14 (App Router)
+- **UI primitives:** Radix UI
+- **Styling:** TailwindCSS 3, class-variance-authority, tailwind-merge
+- **Tables:** @tanstack/react-table v8
+- **Docs:** Storybook 8 (`@storybook/nextjs`)
+- **Tests:** Vitest + @testing-library/react
+- **Visual tests:** Playwright
+- **CI/CD:** GitHub Actions
+
+---
+
+## 🚀 Getting started
+
+```bash
+git clone https://github.com/maxkurylenko1/neutral-ui-kit.git
+cd neutral-ui-kit
+
+pnpm install          # or: npm install
+
+pnpm dev              # http://localhost:3000
+# Demo: http://localhost:3000/demo
+
+pnpm storybook        # http://localhost:6006
 ```
-Frontend:     React 18, TypeScript, Tailwind CSS
-Primitives:   Radix UI (Dialog, Dropdown, Tabs, Tooltip, etc.)
-Styling:      CVA (class-variance-authority), clsx, tailwind-merge
-Testing:      Vitest, React Testing Library, @testing-library/jest-dom
-Docs:         Storybook 8.4 with autodocs
-Tooling:      Next.js 14, ESLint, Prettier, Husky
-```
+
+---
 
 ## 📦 Components
 
@@ -64,124 +94,7 @@ Tooling:      Next.js 14, ESLint, Prettier, Husky
 
 - Card, Badge, Avatar
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-```bash
-Node.js 18+ and pnpm (or npm/yarn)
-```
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/maxkurylenko1/neutral-ui-kit.git
-cd neutral-ui-kit
-
-# Install dependencies
-pnpm install
-
-# Start Storybook
-pnpm storybook
-
-# Run tests
-pnpm test
-
-# Run Next.js dev server
-pnpm dev
-```
-
-### Usage Example
-
-```tsx
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-
-function App() {
-  return (
-    <form>
-      <Input
-        label="Email"
-        type="email"
-        placeholder="you@example.com"
-        helperText="We'll never share your email"
-      />
-
-      <Checkbox
-        label="Subscribe to newsletter"
-        description="Get weekly updates"
-      />
-
-      <Button variant="primary" size="lg">
-        Submit
-      </Button>
-    </form>
-  );
-}
-```
-
-## 🎨 Theming
-
-The design system uses CSS variables for easy theming:
-
-```css
-:root {
-  --primary: 222.2 47.4% 11.2%;
-  --primary-foreground: 210 40% 98%;
-  /* ... */
-}
-
-[data-theme="dark"] {
-  --primary: 210 40% 98%;
-  --primary-foreground: 222.2 47.4% 11.2%;
-  /* ... */
-}
-```
-
-Switch themes programmatically:
-
-```tsx
-import { useTheme } from "@/components/theme-provider";
-
-const { theme, setTheme } = useTheme();
-setTheme("dark"); // or 'light'
-```
-
-## 🧪 Testing
-
-All components include:
-
-- **Unit tests** - Vitest + React Testing Library
-- **Accessibility tests** - ARIA attributes, keyboard navigation
-- **Visual regression** - Storybook stories
-
-```bash
-# Run all tests
-pnpm test
-
-# Run tests in watch mode
-pnpm test:watch
-
-# Run tests with UI
-pnpm test:ui
-```
-
-## 📚 Documentation
-
-Explore components in Storybook:
-
-```bash
-pnpm storybook
-```
-
-Visit `http://localhost:6006` to see:
-
-- Live component examples
-- Interactive controls
-- Accessibility guidelines
-- Code snippets
+---
 
 ## 🏗️ Project Structure
 
@@ -204,6 +117,52 @@ neutral-ui-kit/
 └── .storybook/            # Storybook config
 ```
 
+---
+
+## 🧪 Testing
+
+**Unit tests (Vitest):**
+
+```bash
+pnpm test:run
+```
+
+**Visual tests (Playwright):**
+
+```bash
+# make sure Storybook is running or built and served
+pnpm storybook
+
+# run visual suite
+pnpm test:visual
+
+# accept intentional UI changes
+pnpm test:visual:update
+```
+
+Visual baselines are committed under:
+
+```text
+tests/visual/*.spec.ts-snapshots/
+```
+
+CI installs Playwright browsers (`pnpm exec playwright install --with-deps`) and compares current UI against these baselines. If there is a difference (e.g. fonts on Linux), the workflow uploads a report.
+
+---
+
+## CI / CD
+
+Workflows in `.github/workflows/` perform:
+
+1. dependency installation (pnpm)
+2. linting (`next lint`)
+3. unit tests (`pnpm test:run`)
+4. visual tests (`pnpm exec playwright test`)
+5. Storybook build and publication to GitHub Pages
+6. optional semantic-release (tags and GitHub releases)
+
+---
+
 ## 🎯 Design Principles
 
 1. **Accessibility First** - Every component follows WCAG 2.1 guidelines
@@ -212,40 +171,10 @@ neutral-ui-kit/
 4. **Performant** - Optimized bundle size and runtime performance
 5. **Developer Experience** - Clear APIs, great documentation
 
-## 🔧 Development
-
-```bash
-# Lint code
-pnpm lint
-
-# Format code
-pnpm format
-
-# Build for production
-pnpm build
-
-# Type check
-pnpm type-check
-```
-
-## 📈 Roadmap
-
-- [x] : Base inputs (Button, Input, Checkbox, Switch)
-- [x] : Overlays (Dialog, Toast, Tooltip) + Navigation (Tabs, Dropdown)
-- [x] : Form components (Select, Radio, Textarea)
-- [x] : Data display (Card, Badge, Avatar)
-- [x] : Advanced (Table, Pagination, Carousel)
-- [ ] : Polish, docs, npm publish
-
-## 📄 License
-
-MIT © [Maksym Kurylenko](https://github.com/maxkurylenko1)
-
-## 🔗 Links
-
-- [LinkedIn](https://www.linkedin.com/in/maxkurylenko)
-- [GitHub](https://github.com/maxkurylenko1)
-
 ---
+
+## 9. License
+
+MIT — you can reuse the structure, component patterns, and workflows.
 
 **Built with ❤️ by Maksym Kurylenko**
