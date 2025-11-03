@@ -50,7 +50,7 @@ export default function Home() {
               Go to Demo
             </Link>
             <Link
-              href="http://localhost:6006"
+              href="https://maxkurylenko1.github.io/neutral-ui-kit"
               className="rounded-md border px-5 py-2.5 text-sm font-medium hover:bg-muted/50 transition"
             >
               Open Storybook
